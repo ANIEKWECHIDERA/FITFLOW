@@ -51,7 +51,15 @@ export function PlanEditor({ initialPlan, onCancel, onSave }: EditorProps) {
       <main>
         <section className="form-card plan-basics">
           <label className="field"><span>Plan name</span><input autoFocus placeholder="e.g. Full body strength" value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} /></label>
-          <div className="field"><span>Workout days</span><div className="day-picker">{DAY_OPTIONS.map((day) => { const selected = draft.workoutDays.includes(day.value); return <button type="button" className={selected ? 'selected' : ''} key={day.value} onClick={() => setDraft((current) => ({ ...current, workoutDays: selected ? current.workoutDays.filter((value) => value !== day.value) : [...current.workoutDays, day.value] }))}><b>{day.short}</b><small>{day.name.slice(0, 3)}</small></button> })}</div></div>
+          <div className="field"><span>Workout days <i>tap twice to make optional</i></span><div className="day-picker">{DAY_OPTIONS.map((day) => {
+            const selected = draft.workoutDays.includes(day.value)
+            const optional = draft.optionalWorkoutDays?.includes(day.value) ?? false
+            return <button type="button" className={selected ? 'selected' : optional ? 'optional' : ''} key={day.value} onClick={() => setDraft((current) => {
+              if (selected) return { ...current, workoutDays: current.workoutDays.filter((value) => value !== day.value), optionalWorkoutDays: [...(current.optionalWorkoutDays ?? []), day.value] }
+              if (optional) return { ...current, optionalWorkoutDays: (current.optionalWorkoutDays ?? []).filter((value) => value !== day.value) }
+              return { ...current, workoutDays: [...current.workoutDays, day.value] }
+            })}><b>{day.short}</b><small>{optional ? 'Opt' : day.name.slice(0, 3)}</small></button>
+          })}</div><div className="day-legend"><span><i className="required-dot" /> Streak day</span><span><i className="optional-dot" /> Optional</span></div></div>
           <div className="live-metrics"><span><Clock3 /><b>{metrics.minutes}</b><small>estimated min</small></span><span><Dumbbell /><b>{metrics.sets}</b><small>total sets</small></span><span><Copy /><b>{metrics.blocks}</b><small>sections</small></span></div>
         </section>
 
@@ -101,7 +109,7 @@ export function PlanLibrary({ plans, activePlanId, onBack, onLoad, onEdit, onDel
       <main>
         <p className="library-intro">Choose the plan you want to follow, or update the details as your routine evolves.</p>
         <div className="library-list">{plans.map((plan) => { const metrics = getPlanMetrics(plan); const active = plan.id === activePlanId; return <article className={active ? 'library-card active' : 'library-card'} key={plan.id}>
-          <div className="library-card-top"><span className="library-icon"><Dumbbell /></span><span><small>{active ? 'ACTIVE PLAN' : `${plan.workoutDays.length} DAYS / WEEK`}</small><h2>{plan.name}</h2></span>{active && <span className="active-check"><Check /></span>}</div>
+          <div className="library-card-top"><span className="library-icon"><Dumbbell /></span><span><small>{active ? 'ACTIVE PLAN' : `${plan.workoutDays.length}${plan.optionalWorkoutDays?.length ? `–${plan.workoutDays.length + plan.optionalWorkoutDays.length}` : ''} DAYS / WEEK`}</small><h2>{plan.name}</h2></span>{active && <span className="active-check"><Check /></span>}</div>
           <div className="library-metrics"><span>{metrics.minutes} min</span><i /><span>{metrics.sets} sets</span><i /><span>{metrics.blocks} sections</span></div>
           <div className="library-actions">{!active && <button className="load-plan" onClick={() => onLoad(plan.id)}>Load plan <ChevronRight /></button>}<button onClick={() => onEdit(plan)}><Edit3 /> Edit</button><button className="delete-plan" disabled={plans.length === 1} onClick={() => setDeleteId(plan.id)}><Trash2 /> Delete</button></div>
         </article>})}</div>

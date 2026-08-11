@@ -10,11 +10,12 @@ import { PlanEditor, PlanLibrary } from './PlanManagement'
 
 type Screen = 'home' | 'plan' | 'progress' | 'manage' | 'editor'
 type Session = { id: string; planId?: string; date: string; title: string; durationSeconds: number; status: 'completed' | 'partial' | 'skipped' }
-type DisplayDay = { day: string; short: string; kind: 'strength' | 'rest'; title: string; duration: string }
+type DisplayDay = { day: string; short: string; kind: 'strength' | 'rest'; title: string; duration: string; optional?: boolean }
 
 const STORAGE_KEY = 'fitflow.sessions.v1'
 const PLANS_KEY = 'fitflow.plans.v1'
 const ACTIVE_PLAN_KEY = 'fitflow.active-plan.v1'
+const REQUESTED_PLAN_KEY = 'fitflow.requested-plan.full-upper-core.v1'
 const isoDate = (date = new Date()) => new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, 10)
 
 function loadSessions(): Session[] {
@@ -25,19 +26,18 @@ function loadSessions(): Session[] {
 function loadPlans(): WorkoutPlan[] {
   try {
     const stored = JSON.parse(localStorage.getItem(PLANS_KEY) ?? '[]') as WorkoutPlan[]
-    return stored.length ? stored : [defaultPlan]
+    if (!stored.length) return [defaultPlan]
+    return stored.some((plan) => plan.id === defaultPlan.id) ? stored : [defaultPlan, ...stored]
   } catch { return [defaultPlan] }
 }
 
 function buildWeek(plan: WorkoutPlan): DisplayDay[] {
   const metrics = getPlanMetrics(plan)
-  return DAY_OPTIONS.map((day) => ({
-    day: day.name,
-    short: day.short,
-    kind: plan.workoutDays.includes(day.value) ? 'strength' : 'rest',
-    title: plan.workoutDays.includes(day.value) ? plan.name : 'Rest & recover',
-    duration: plan.workoutDays.includes(day.value) ? `${metrics.minutes} min` : '—',
-  }))
+  return DAY_OPTIONS.map((day) => {
+    const scheduled = plan.workoutDays.includes(day.value)
+    const optional = plan.optionalWorkoutDays?.includes(day.value) ?? false
+    return { day: day.name, short: day.short, kind: scheduled || optional ? 'strength' : 'rest', title: scheduled || optional ? plan.name : 'Rest & recover', duration: scheduled || optional ? `${metrics.minutes} min` : '—', optional }
+  })
 }
 
 function playCue(type: 'start' | 'rest' | 'tick' | 'finish') {
@@ -65,7 +65,16 @@ function App() {
   const [playerOpen, setPlayerOpen] = useState(false)
   const [sessions, setSessions] = useState<Session[]>(loadSessions)
   const [plans, setPlans] = useState<WorkoutPlan[]>(loadPlans)
-  const [activePlanId, setActivePlanId] = useState(() => localStorage.getItem(ACTIVE_PLAN_KEY) ?? loadPlans()[0].id)
+  const [activePlanId, setActivePlanId] = useState(() => {
+    if (localStorage.getItem(REQUESTED_PLAN_KEY) !== defaultPlan.id) {
+      const availablePlans = loadPlans()
+      localStorage.setItem(PLANS_KEY, JSON.stringify(availablePlans))
+      localStorage.setItem(ACTIVE_PLAN_KEY, defaultPlan.id)
+      localStorage.setItem(REQUESTED_PLAN_KEY, defaultPlan.id)
+      return defaultPlan.id
+    }
+    return localStorage.getItem(ACTIVE_PLAN_KEY) ?? loadPlans()[0].id
+  })
   const [editingPlan, setEditingPlan] = useState<WorkoutPlan | undefined>()
   const [profileMenu, setProfileMenu] = useState(false)
   const activePlan = plans.find((plan) => plan.id === activePlanId) ?? plans[0]
@@ -192,7 +201,7 @@ function HomeScreen({ plan, week, today, streak, completedDates, skippedDates, o
         </div>
         <div className="workout-glyph">{icon}<span className="glyph-ring one" /><span className="glyph-ring two" /></div>
         <div className="workout-copy">
-          <span className="workout-kind">{today.kind}</span>
+          <span className="workout-kind">{today.optional ? 'optional workout' : today.kind}</span>
           <h2>{today.title}</h2>
           <p>{canPlay ? `${metrics.blocks} blocks · ${metrics.sets} focused sets` : 'Recovery is part of the work.'}</p>
         </div>
@@ -235,7 +244,7 @@ function PlanScreen({ plan, onStart }: { plan: WorkoutPlan; onStart: () => void 
     <div className="screen plan-screen">
       <p className="eyebrow">YOUR PROGRAM</p>
       <h1>The flow,<br />mapped out.</h1>
-      <p className="lead">{plan.name} · scheduled {plan.workoutDays.length} {plan.workoutDays.length === 1 ? 'day' : 'days'} each week.</p>
+      <p className="lead">{plan.name} · scheduled {plan.workoutDays.length}{plan.optionalWorkoutDays?.length ? `–${plan.workoutDays.length + plan.optionalWorkoutDays.length}` : ''} {plan.workoutDays.length === 1 && !plan.optionalWorkoutDays?.length ? 'day' : 'days'} each week.</p>
       <div className="plan-summary"><span><TimerReset /> {metrics.minutes} min</span><span><Activity /> {metrics.sets} sets</span><span><Dumbbell /> {metrics.blocks} blocks</span></div>
       <div className="block-list">
         {plan.blocks.map((block) => {
