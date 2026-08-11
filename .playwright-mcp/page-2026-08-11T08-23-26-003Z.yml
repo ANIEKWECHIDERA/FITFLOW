@@ -1,0 +1,20 @@
+- generic [ref=e254]:
+  - banner [ref=e255]:
+    - button "Exit" [ref=e256]
+    - generic [ref=e259]: 0% complete
+    - button "Audio cues on" [ref=e260]
+  - main [ref=e266]:
+    - generic [ref=e267]:
+      - generic [ref=e268]: WARM-UP
+      - generic [ref=e270]: SET 1 OF 1
+    - generic [ref=e281]:
+      - paragraph [ref=e282]: Warm-up
+      - heading "Arm circles" [level=1] [ref=e283]
+      - generic [ref=e284]: 1:00
+      - paragraph [ref=e285]: 30 seconds forward, then 30 seconds backward.
+    - generic [ref=e286]:
+      - button [ref=e287]
+      - button "End workout" [ref=e291]
+    - generic [ref=e300]:
+      - generic [ref=e301]: UP NEXT
+      - generic [ref=e302]: Flow complete

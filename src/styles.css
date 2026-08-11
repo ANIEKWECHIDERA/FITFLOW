@@ -126,3 +126,25 @@ blockquote { margin: 22px 16px; text-align: center; color: #8b908a; font: 500 13
 @media (max-height: 720px) {
   .motion-orbit { width: 130px; height: 130px; margin-top: 8px; }.orbit-one { width: 100px; height: 100px; }.orbit-two { width: 130px; height: 130px; }.motion-orbit > div { width: 65px; height: 65px; }.motion-orbit > div svg { width: 34px; }.target { font-size: 52px; }.player-actions { padding: 4px 0 9px; }.round-control { width: 58px; height: 58px; }
 }
+
+/* Motion-enhanced plan controls */
+.screen { animation: none; }
+.block-list { padding-bottom: 122px; }
+.block-card-header { min-height: 76px; display: grid; grid-template-columns: 1fr 48px; align-items: center; padding-right: 11px; }
+.block-card .block-toggle { width: 100%; min-height: 76px; border: 0; background: transparent; display: grid; grid-template-columns: 45px 1fr 24px; align-items: center; text-align: left; padding: 12px 8px 12px 16px; color: var(--ink); }
+.block-toggle > span:nth-child(2) { display: flex; flex-direction: column; gap: 3px; }.block-toggle b { font: 700 16px 'Manrope'; }.block-toggle small { color: #818780; font-size: 11px; }.block-toggle > svg { transition: transform .24s ease; }.block-card.open .block-toggle > svg { transform: rotate(90deg); }
+.scope-start, .exercise-start { border: 0; background: var(--ink); color: var(--lime); display: grid; place-items: center; border-radius: 50%; cursor: pointer; }.scope-start { width: 38px; height: 38px; }.scope-start svg { width: 15px; }.exercise-start { width: 31px; height: 31px; justify-self: end; }.exercise-start svg { width: 12px; }
+.exercise-list { overflow: hidden; }.exercise-list > div { grid-template-columns: 38px 1fr 38px; }
+.floating-start { bottom: 92px; }
+
+.editor-save-actions { display: grid; grid-template-columns: 1fr 1.25fr; gap: 9px; margin-top: 14px; }.editor-save-actions .editor-save { margin-top: 0; padding: 0 12px; }.editor-save.secondary-save { background: white; color: var(--ink); border: 1px solid #cfcfc7; }.editor-save.secondary-save svg { color: #687068; }
+.library-actions .load-plan { margin-left: auto; margin-right: 0; }.library-actions .load-plan:disabled { background: #e7e6df; color: #858b84; opacity: 1; cursor: default; }
+
+.loading-screen { position: fixed; z-index: 100; inset: 0; background: color-mix(in srgb, var(--paper) 94%, transparent); backdrop-filter: blur(12px); display: flex; flex-direction: column; align-items: center; justify-content: center; color: var(--ink); }
+.loading-screen b { margin-top: 18px; font: 700 17px 'Manrope'; letter-spacing: -.025em; }.loading-screen small { margin-top: 5px; color: #858b84; font-size: 10px; }
+.loading-mark { width: 58px; height: 58px; border-radius: 19px; background: var(--ink); padding: 15px 13px; display: flex; flex-direction: column; justify-content: center; gap: 5px; box-shadow: 0 12px 30px #10161125; }.loading-mark span { display: block; height: 3px; border-radius: 4px; background: var(--lime); }.loading-mark span:nth-child(2) { width: 72%; }.loading-mark span:nth-child(3) { width: 43%; }
+
+@media (max-width: 390px) {
+  .editor-save-actions { grid-template-columns: 1fr; }
+  .library-actions button { padding-inline: 6px; }
+}

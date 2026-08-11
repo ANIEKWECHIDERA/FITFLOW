@@ -1,11 +1,19 @@
 import { useMemo, useState } from 'react'
+import { AnimatePresence, motion } from 'motion/react'
 import { ArrowLeft, Check, ChevronRight, Clock3, Copy, Dumbbell, Edit3, Plus, Save, Trash2, X } from 'lucide-react'
 import { createEmptyExercise, createEmptyPlan, DAY_OPTIONS, getPlanMetrics, type Exercise, type WorkoutPlan } from './data'
 
 type EditorProps = {
   initialPlan?: WorkoutPlan
   onCancel: () => void
-  onSave: (plan: WorkoutPlan) => void
+  onSave: (plan: WorkoutPlan, activate: boolean) => void
+}
+
+const countLabel = (count: number, singular: string, plural = `${singular}s`) => `${count} ${count === 1 ? singular : plural}`
+const scheduleLabel = (plan: WorkoutPlan) => {
+  const minimum = plan.workoutDays.length
+  const maximum = minimum + (plan.optionalWorkoutDays?.length ?? 0)
+  return `${minimum}${maximum > minimum ? `–${maximum}` : ''} ${maximum === 1 ? 'day' : 'days'} / week`
 }
 
 export function PlanEditor({ initialPlan, onCancel, onSave }: EditorProps) {
@@ -31,7 +39,7 @@ export function PlanEditor({ initialPlan, onCancel, onSave }: EditorProps) {
     blocks: current.blocks.filter((block) => block.id !== blockId).map((block, index) => ({ ...block, shortName: String(index + 1).padStart(2, '0') })),
   }))
 
-  const submit = () => {
+  const submit = (activate: boolean) => {
     if (!draft.name.trim()) { setError('Give your plan a name.'); return }
     if (draft.workoutDays.length === 0) { setError('Choose at least one workout day.'); return }
     if (draft.blocks.length === 0 || draft.blocks.some((block) => block.exercises.length === 0)) { setError('Each plan needs at least one section with a workout.'); return }
@@ -42,12 +50,12 @@ export function PlanEditor({ initialPlan, onCancel, onSave }: EditorProps) {
       updatedAt: new Date().toISOString(),
       blocks: draft.blocks.map((block, index) => ({ ...block, name: block.name.trim() || `Section ${index + 1}`, shortName: String(index + 1).padStart(2, '0') })),
     }
-    onSave(normalized)
+    onSave(normalized, activate)
   }
 
   return (
     <div className="management-page editor-page">
-      <header className="management-header"><button onClick={onCancel}><ArrowLeft /></button><div><span className="mini-label">{initialPlan ? 'EDIT PLAN' : 'NEW PLAN'}</span><h1>{initialPlan ? 'Refine your flow' : 'Build your flow'}</h1></div><button className="save-icon" onClick={submit} aria-label="Save plan"><Save /></button></header>
+      <header className="management-header"><button onClick={onCancel}><ArrowLeft /></button><div><span className="mini-label">{initialPlan ? 'EDIT PLAN' : 'NEW PLAN'}</span><h1>{initialPlan ? 'Refine your flow' : 'Build your flow'}</h1></div><button className="save-icon" onClick={() => submit(false)} aria-label="Save plan"><Save /></button></header>
       <main>
         <section className="form-card plan-basics">
           <label className="field"><span>Plan name</span><input autoFocus placeholder="e.g. Full body strength" value={draft.name} onChange={(event) => setDraft({ ...draft, name: event.target.value })} /></label>
@@ -60,11 +68,11 @@ export function PlanEditor({ initialPlan, onCancel, onSave }: EditorProps) {
               return { ...current, workoutDays: [...current.workoutDays, day.value] }
             })}><b>{day.short}</b><small>{optional ? 'Opt' : day.name.slice(0, 3)}</small></button>
           })}</div><div className="day-legend"><span><i className="required-dot" /> Streak day</span><span><i className="optional-dot" /> Optional</span></div></div>
-          <div className="live-metrics"><span><Clock3 /><b>{metrics.minutes}</b><small>estimated min</small></span><span><Dumbbell /><b>{metrics.sets}</b><small>total sets</small></span><span><Copy /><b>{metrics.blocks}</b><small>sections</small></span></div>
+          <div className="live-metrics"><span><Clock3 /><b>{metrics.minutes}</b><small>estimated {metrics.minutes === 1 ? 'min' : 'mins'}</small></span><span><Dumbbell /><b>{metrics.sets}</b><small>total {metrics.sets === 1 ? 'set' : 'sets'}</small></span><span><Copy /><b>{metrics.blocks}</b><small>{metrics.blocks === 1 ? 'section' : 'sections'}</small></span></div>
         </section>
 
         <div className="editor-sections">
-          {draft.blocks.map((block, blockIndex) => <section className="form-card section-editor" key={block.id}>
+          <AnimatePresence initial={false}>{draft.blocks.map((block, blockIndex) => <motion.section layout initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} exit={{ opacity: 0, scale: 0.98 }} transition={{ duration: 0.22 }} className="form-card section-editor" key={block.id}>
             <div className="section-editor-head"><span className="section-count">{String(blockIndex + 1).padStart(2, '0')}</span><label className="field"><span>Section name <i>optional</i></span><input placeholder={`Section ${blockIndex + 1}`} value={block.name} onChange={(event) => updateBlock(block.id, (current) => ({ ...current, name: event.target.value }))} /></label><button className="icon-danger" onClick={() => deleteSection(block.id)} aria-label="Delete section"><Trash2 /></button></div>
             <div className="workout-editors">
               {block.exercises.map((exercise, exerciseIndex) => <div className="workout-editor" key={exercise.id}>
@@ -81,11 +89,11 @@ export function PlanEditor({ initialPlan, onCancel, onSave }: EditorProps) {
               </div>)}
             </div>
             <button className="add-inline" onClick={() => updateBlock(block.id, (current) => ({ ...current, exercises: [...current.exercises, createEmptyExercise()] }))}><Plus /> Add workout</button>
-          </section>)}
+          </motion.section>)}</AnimatePresence>
         </div>
         <button className="add-section-button" onClick={addSection}><Plus /> Add section</button>
         {error && <p className="form-error">{error}</p>}
-        <button className="editor-save" onClick={submit}><Check /> Save & load plan</button>
+        <div className="editor-save-actions"><motion.button whileTap={{ scale: 0.98 }} className="editor-save secondary-save" onClick={() => submit(false)}><Save /> Save plan</motion.button><motion.button whileTap={{ scale: 0.98 }} className="editor-save" onClick={() => submit(true)}><Check /> Save & load plan</motion.button></div>
       </main>
     </div>
   )
@@ -108,11 +116,11 @@ export function PlanLibrary({ plans, activePlanId, onBack, onLoad, onEdit, onDel
       <header className="management-header"><button onClick={onBack}><ArrowLeft /></button><div><span className="mini-label">YOUR LIBRARY</span><h1>Manage plans</h1></div><button className="save-icon" onClick={onNew} aria-label="New plan"><Plus /></button></header>
       <main>
         <p className="library-intro">Choose the plan you want to follow, or update the details as your routine evolves.</p>
-        <div className="library-list">{plans.map((plan) => { const metrics = getPlanMetrics(plan); const active = plan.id === activePlanId; return <article className={active ? 'library-card active' : 'library-card'} key={plan.id}>
-          <div className="library-card-top"><span className="library-icon"><Dumbbell /></span><span><small>{active ? 'ACTIVE PLAN' : `${plan.workoutDays.length}${plan.optionalWorkoutDays?.length ? `–${plan.workoutDays.length + plan.optionalWorkoutDays.length}` : ''} DAYS / WEEK`}</small><h2>{plan.name}</h2></span>{active && <span className="active-check"><Check /></span>}</div>
-          <div className="library-metrics"><span>{metrics.minutes} min</span><i /><span>{metrics.sets} sets</span><i /><span>{metrics.blocks} sections</span></div>
-          <div className="library-actions">{!active && <button className="load-plan" onClick={() => onLoad(plan.id)}>Load plan <ChevronRight /></button>}<button onClick={() => onEdit(plan)}><Edit3 /> Edit</button><button className="delete-plan" disabled={plans.length === 1} onClick={() => setDeleteId(plan.id)}><Trash2 /> Delete</button></div>
-        </article>})}</div>
+        <motion.div layout className="library-list">{plans.map((plan) => { const metrics = getPlanMetrics(plan); const active = plan.id === activePlanId; return <motion.article layout initial={{ opacity: 0, y: 8 }} animate={{ opacity: 1, y: 0 }} transition={{ duration: 0.24 }} className={active ? 'library-card active' : 'library-card'} key={plan.id}>
+          <div className="library-card-top"><span className="library-icon"><Dumbbell /></span><span><small>{active ? 'ACTIVE PLAN' : scheduleLabel(plan).toUpperCase()}</small><h2>{plan.name}</h2></span>{active && <span className="active-check"><Check /></span>}</div>
+          <div className="library-metrics"><span>{countLabel(metrics.minutes, 'min')}</span><i /><span>{countLabel(metrics.sets, 'set')}</span><i /><span>{countLabel(metrics.blocks, 'section')}</span></div>
+          <div className="library-actions"><button onClick={() => onEdit(plan)}><Edit3 /> Edit</button><button className="delete-plan" disabled={plans.length === 1} onClick={() => setDeleteId(plan.id)}><Trash2 /> Delete</button><button className="load-plan" disabled={active} onClick={() => onLoad(plan.id)}>Load plan <ChevronRight /></button></div>
+        </motion.article>})}</motion.div>
         <button className="add-section-button" onClick={onNew}><Plus /> Create new plan</button>
       </main>
       {deleteId && <div className="modal-backdrop"><div className="stop-modal"><span className="modal-icon"><Trash2 /></span><p className="eyebrow">DELETE PLAN?</p><h2>This can’t be undone.</h2><p>Your workout history will stay, but this plan and its workout setup will be removed.</p><button className="delete-confirm-button" onClick={() => { onDelete(deleteId); setDeleteId(null) }}>Delete plan</button><button className="secondary-button" onClick={() => setDeleteId(null)}>Keep plan</button></div></div>}

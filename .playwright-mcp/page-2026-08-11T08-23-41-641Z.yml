@@ -1,0 +1,22 @@
+- generic [ref=f1e106]:
+  - banner [ref=f1e107]:
+    - button [ref=f1e108]
+    - generic [ref=f1e111]:
+      - text: YOUR LIBRARY
+      - heading "Manage plans" [level=1] [ref=f1e112]
+    - button "New plan" [ref=f1e113]
+  - main [ref=f1e115]:
+    - paragraph [ref=f1e116]: Choose the plan you want to follow, or update the details as your routine evolves.
+    - article [ref=f1e118]:
+      - generic [ref=f1e127]:
+        - text: ACTIVE PLAN
+        - heading "Full Upper Body + Core Workout (Intermediate)" [level=2] [ref=f1e128]
+      - generic [ref=f1e132]:
+        - generic [ref=f1e133]: 49 mins
+        - generic [ref=f1e135]: 56 sets
+        - generic [ref=f1e137]: 5 sections
+      - generic [ref=f1e138]:
+        - button "Edit" [ref=f1e139]
+        - button "Delete" [disabled] [ref=f1e142]
+        - button "Load plan" [disabled] [ref=f1e146]
+    - button "Create new plan" [ref=f1e149]

@@ -1,0 +1,53 @@
+- generic [ref=f1e3]:
+  - banner [ref=f1e4]:
+    - button "FitFlow home" [ref=f1e5]:
+      - generic [ref=f1e10]: FITFLOW
+    - button "Open plan menu" [ref=f1e12]: CA
+  - main [ref=f1e13]:
+    - generic [ref=f1e14]:
+      - generic [ref=f1e15]:
+        - paragraph [ref=f1e16]: Tuesday, August 11
+        - heading "Ready when you are." [level=1] [ref=f1e17]: Ready whenyou are.
+        - paragraph [ref=f1e18]: One session at a time. Keep the flow going.
+      - generic [ref=f1e19]:
+        - generic [ref=f1e20]:
+          - generic [ref=f1e21]: TODAY'S FLOW
+          - generic [ref=f1e22]: —
+        - generic [ref=f1e32]:
+          - text: rest
+          - heading "Rest & recover" [level=2] [ref=f1e33]
+          - paragraph [ref=f1e34]: Recovery is part of the work.
+        - generic [ref=f1e35]: Take it easy. Your next flow is waiting.
+      - generic [ref=f1e36]:
+        - generic [ref=f1e37]:
+          - generic [ref=f1e38]:
+            - text: THIS WEEK
+            - heading "Your rhythm" [level=3] [ref=f1e39]
+          - generic [ref=f1e40]: 0 days streak
+        - generic [ref=f1e43]:
+          - generic [ref=f1e44]:
+            - generic [ref=f1e45]: M
+            - generic [ref=f1e46]: "10"
+          - generic [ref=f1e48]:
+            - generic [ref=f1e49]: T
+            - generic [ref=f1e50]: "11"
+          - generic [ref=f1e52]:
+            - generic [ref=f1e53]: W
+            - generic [ref=f1e54]: "12"
+          - generic [ref=f1e56]:
+            - generic [ref=f1e57]: T
+            - generic [ref=f1e58]: "13"
+          - generic [ref=f1e60]:
+            - generic [ref=f1e61]: F
+            - generic [ref=f1e62]: "14"
+          - generic [ref=f1e64]:
+            - generic [ref=f1e65]: S
+            - generic [ref=f1e66]: "15"
+          - generic [ref=f1e68]:
+            - generic [ref=f1e69]: S
+            - generic [ref=f1e70]: "16"
+      - blockquote [ref=f1e72]: “Motivation gets you started. Flow keeps you moving.”
+  - navigation "Main navigation" [ref=f1e73]:
+    - button "Today" [ref=f1e74]
+    - button "Plan" [ref=f1e79]
+    - button "Progress" [ref=f1e87]

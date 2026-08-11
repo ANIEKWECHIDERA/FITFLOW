@@ -1,0 +1,1048 @@
+- generic [ref=f1e151]:
+  - banner [ref=f1e152]:
+    - button [ref=f1e153]
+    - generic [ref=f1e156]:
+      - text: EDIT PLAN
+      - heading "Refine your flow" [level=1] [ref=f1e157]
+    - button "Save plan" [ref=f1e158]
+  - main [ref=f1e163]:
+    - generic [ref=f1e164]:
+      - generic [ref=f1e165]:
+        - generic [ref=f1e166]: Plan name
+        - textbox "Plan name" [active] [ref=f1e167]:
+          - /placeholder: e.g. Full body strength
+          - text: Full Upper Body + Core Workout (Intermediate)
+      - generic [ref=f1e168]:
+        - generic [ref=f1e169]: Workout days tap twice to make optional
+        - generic [ref=f1e170]:
+          - button "M Mon" [ref=f1e171]:
+            - generic [ref=f1e172]: M
+            - generic [ref=f1e173]: Mon
+          - button "T Tue" [ref=f1e174]:
+            - generic [ref=f1e175]: T
+            - generic [ref=f1e176]: Tue
+          - button "W Wed" [ref=f1e177]:
+            - generic [ref=f1e178]: W
+            - generic [ref=f1e179]: Wed
+          - button "T Thu" [ref=f1e180]:
+            - generic [ref=f1e181]: T
+            - generic [ref=f1e182]: Thu
+          - button "F Opt" [ref=f1e183]:
+            - generic [ref=f1e184]: F
+            - generic [ref=f1e185]: Opt
+          - button "S Sat" [ref=f1e186]:
+            - generic [ref=f1e187]: S
+            - generic [ref=f1e188]: Sat
+          - button "S Sun" [ref=f1e189]:
+            - generic [ref=f1e190]: S
+            - generic [ref=f1e191]: Sun
+        - generic [ref=f1e192]:
+          - generic [ref=f1e193]: Streak day
+          - generic [ref=f1e195]: Optional
+      - generic [ref=f1e197]:
+        - generic [ref=f1e198]:
+          - generic [ref=f1e202]: "49"
+          - generic [ref=f1e203]: estimated mins
+        - generic [ref=f1e204]:
+          - generic [ref=f1e211]: "56"
+          - generic [ref=f1e212]: total sets
+        - generic [ref=f1e213]:
+          - generic [ref=f1e217]: "5"
+          - generic [ref=f1e218]: sections
+    - generic [ref=f1e219]:
+      - generic [ref=f1e220]:
+        - generic [ref=f1e221]:
+          - generic [ref=f1e222]: "01"
+          - generic [ref=f1e223]:
+            - generic [ref=f1e224]: Section name optional
+            - textbox "Section name optional" [ref=f1e225]:
+              - /placeholder: Section 1
+              - text: Warm-up
+          - button "Delete section" [ref=f1e226]
+        - generic [ref=f1e230]:
+          - generic [ref=f1e231]:
+            - generic [ref=f1e232]:
+              - generic [ref=f1e233]: WORKOUT 1
+              - button "Delete workout" [ref=f1e234]
+            - generic [ref=f1e238]:
+              - generic [ref=f1e239]: Workout name
+              - textbox "Workout name" [ref=f1e240]:
+                - /placeholder: e.g. Push-ups
+                - text: Arm circles
+            - generic [ref=f1e241]:
+              - generic [ref=f1e242]:
+                - generic [ref=f1e243]: Workout type
+                - combobox "Workout type" [ref=f1e244]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e245]:
+                - generic [ref=f1e246]: Sets
+                - spinbutton "Sets" [ref=f1e247]: "1"
+              - generic [ref=f1e248]:
+                - generic [ref=f1e249]: Target label
+                - textbox "Target label" [ref=f1e250]:
+                  - /placeholder: Optional
+                  - text: 30 sec each direction
+              - generic [ref=f1e251]:
+                - generic [ref=f1e252]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e253]: "60"
+              - generic [ref=f1e254]:
+                - generic [ref=f1e255]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e256]: "0"
+              - generic [ref=f1e257]:
+                - generic [ref=f1e258]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e259]:
+                  - /placeholder: Form cue or reminder
+                  - text: 30 seconds forward, then 30 seconds backward.
+          - generic [ref=f1e260]:
+            - generic [ref=f1e261]:
+              - generic [ref=f1e262]: WORKOUT 2
+              - button "Delete workout" [ref=f1e263]
+            - generic [ref=f1e267]:
+              - generic [ref=f1e268]: Workout name
+              - textbox "Workout name" [ref=f1e269]:
+                - /placeholder: e.g. Push-ups
+                - text: Jumping jacks
+            - generic [ref=f1e270]:
+              - generic [ref=f1e271]:
+                - generic [ref=f1e272]: Workout type
+                - combobox "Workout type" [ref=f1e273]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e274]:
+                - generic [ref=f1e275]: Sets
+                - spinbutton "Sets" [ref=f1e276]: "1"
+              - generic [ref=f1e277]:
+                - generic [ref=f1e278]: Target label
+                - textbox "Target label" [ref=f1e279]:
+                  - /placeholder: Optional
+                  - text: 1 minute
+              - generic [ref=f1e280]:
+                - generic [ref=f1e281]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e282]: "60"
+              - generic [ref=f1e283]:
+                - generic [ref=f1e284]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e285]: "0"
+              - generic [ref=f1e286]:
+                - generic [ref=f1e287]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e288]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e289]:
+            - generic [ref=f1e290]:
+              - generic [ref=f1e291]: WORKOUT 3
+              - button "Delete workout" [ref=f1e292]
+            - generic [ref=f1e296]:
+              - generic [ref=f1e297]: Workout name
+              - textbox "Workout name" [ref=f1e298]:
+                - /placeholder: e.g. Push-ups
+                - text: Shoulder rolls
+            - generic [ref=f1e299]:
+              - generic [ref=f1e300]:
+                - generic [ref=f1e301]: Workout type
+                - combobox "Workout type" [ref=f1e302]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e303]:
+                - generic [ref=f1e304]: Sets
+                - spinbutton "Sets" [ref=f1e305]: "1"
+              - generic [ref=f1e306]:
+                - generic [ref=f1e307]: Target label
+                - textbox "Target label" [ref=f1e308]:
+                  - /placeholder: Optional
+                  - text: 30 seconds
+              - generic [ref=f1e309]:
+                - generic [ref=f1e310]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e311]: "30"
+              - generic [ref=f1e312]:
+                - generic [ref=f1e313]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e314]: "0"
+              - generic [ref=f1e315]:
+                - generic [ref=f1e316]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e317]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e318]:
+            - generic [ref=f1e319]:
+              - generic [ref=f1e320]: WORKOUT 4
+              - button "Delete workout" [ref=f1e321]
+            - generic [ref=f1e325]:
+              - generic [ref=f1e326]: Workout name
+              - textbox "Workout name" [ref=f1e327]:
+                - /placeholder: e.g. Push-ups
+                - text: High knees
+            - generic [ref=f1e328]:
+              - generic [ref=f1e329]:
+                - generic [ref=f1e330]: Workout type
+                - combobox "Workout type" [ref=f1e331]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e332]:
+                - generic [ref=f1e333]: Sets
+                - spinbutton "Sets" [ref=f1e334]: "1"
+              - generic [ref=f1e335]:
+                - generic [ref=f1e336]: Target label
+                - textbox "Target label" [ref=f1e337]:
+                  - /placeholder: Optional
+                  - text: 1 minute
+              - generic [ref=f1e338]:
+                - generic [ref=f1e339]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e340]: "60"
+              - generic [ref=f1e341]:
+                - generic [ref=f1e342]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e343]: "0"
+              - generic [ref=f1e344]:
+                - generic [ref=f1e345]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e346]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e347]:
+            - generic [ref=f1e348]:
+              - generic [ref=f1e349]: WORKOUT 5
+              - button "Delete workout" [ref=f1e350]
+            - generic [ref=f1e354]:
+              - generic [ref=f1e355]: Workout name
+              - textbox "Workout name" [ref=f1e356]:
+                - /placeholder: e.g. Push-ups
+                - text: Dynamic chest stretch
+            - generic [ref=f1e357]:
+              - generic [ref=f1e358]:
+                - generic [ref=f1e359]: Workout type
+                - combobox "Workout type" [ref=f1e360]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e361]:
+                - generic [ref=f1e362]: Sets
+                - spinbutton "Sets" [ref=f1e363]: "1"
+              - generic [ref=f1e364]:
+                - generic [ref=f1e365]: Target label
+                - textbox "Target label" [ref=f1e366]:
+                  - /placeholder: Optional
+                  - text: 1 minute
+              - generic [ref=f1e367]:
+                - generic [ref=f1e368]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e369]: "60"
+              - generic [ref=f1e370]:
+                - generic [ref=f1e371]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e372]: "0"
+              - generic [ref=f1e373]:
+                - generic [ref=f1e374]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e375]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e376]:
+            - generic [ref=f1e377]:
+              - generic [ref=f1e378]: WORKOUT 6
+              - button "Delete workout" [ref=f1e379]
+            - generic [ref=f1e383]:
+              - generic [ref=f1e384]: Workout name
+              - textbox "Workout name" [ref=f1e385]:
+                - /placeholder: e.g. Push-ups
+                - text: Cat-cow stretch
+            - generic [ref=f1e386]:
+              - generic [ref=f1e387]:
+                - generic [ref=f1e388]: Workout type
+                - combobox "Workout type" [ref=f1e389]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e390]:
+                - generic [ref=f1e391]: Sets
+                - spinbutton "Sets" [ref=f1e392]: "1"
+              - generic [ref=f1e393]:
+                - generic [ref=f1e394]: Target label
+                - textbox "Target label" [ref=f1e395]:
+                  - /placeholder: Optional
+                  - text: 1 minute
+              - generic [ref=f1e396]:
+                - generic [ref=f1e397]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e398]: "60"
+              - generic [ref=f1e399]:
+                - generic [ref=f1e400]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e401]: "0"
+              - generic [ref=f1e402]:
+                - generic [ref=f1e403]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e404]:
+                  - /placeholder: Form cue or reminder
+        - button "Add workout" [ref=f1e405]
+      - generic [ref=f1e407]:
+        - generic [ref=f1e408]:
+          - generic [ref=f1e409]: "02"
+          - generic [ref=f1e410]:
+            - generic [ref=f1e411]: Section name optional
+            - textbox "Section name optional" [ref=f1e412]:
+              - /placeholder: Section 2
+              - text: Main workout
+          - button "Delete section" [ref=f1e413]
+        - generic [ref=f1e417]:
+          - generic [ref=f1e418]:
+            - generic [ref=f1e419]:
+              - generic [ref=f1e420]: WORKOUT 1
+              - button "Delete workout" [ref=f1e421]
+            - generic [ref=f1e425]:
+              - generic [ref=f1e426]: Workout name
+              - textbox "Workout name" [ref=f1e427]:
+                - /placeholder: e.g. Push-ups
+                - text: Push-ups
+            - generic [ref=f1e428]:
+              - generic [ref=f1e429]:
+                - generic [ref=f1e430]: Workout type
+                - combobox "Workout type" [ref=f1e431]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e432]:
+                - generic [ref=f1e433]: Sets
+                - spinbutton "Sets" [ref=f1e434]: "4"
+              - generic [ref=f1e435]:
+                - generic [ref=f1e436]: Reps per set
+                - textbox "Reps per set" [ref=f1e437]:
+                  - /placeholder: e.g. 10–12
+                  - text: 12–20 reps
+              - generic [ref=f1e438]:
+                - generic [ref=f1e439]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e440]: "30"
+              - generic [ref=f1e441]:
+                - generic [ref=f1e442]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e443]: "75"
+              - generic [ref=f1e444]:
+                - generic [ref=f1e445]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e446]:
+                  - /placeholder: Form cue or reminder
+                  - text: Rest 60–90 seconds between sets.
+          - generic [ref=f1e447]:
+            - generic [ref=f1e448]:
+              - generic [ref=f1e449]: WORKOUT 2
+              - button "Delete workout" [ref=f1e450]
+            - generic [ref=f1e454]:
+              - generic [ref=f1e455]: Workout name
+              - textbox "Workout name" [ref=f1e456]:
+                - /placeholder: e.g. Push-ups
+                - text: Backpack rows
+            - generic [ref=f1e457]:
+              - generic [ref=f1e458]:
+                - generic [ref=f1e459]: Workout type
+                - combobox "Workout type" [ref=f1e460]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e461]:
+                - generic [ref=f1e462]: Sets
+                - spinbutton "Sets" [ref=f1e463]: "4"
+              - generic [ref=f1e464]:
+                - generic [ref=f1e465]: Reps per set
+                - textbox "Reps per set" [ref=f1e466]:
+                  - /placeholder: e.g. 10–12
+                  - text: 10–15 reps
+              - generic [ref=f1e467]:
+                - generic [ref=f1e468]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e469]: "30"
+              - generic [ref=f1e470]:
+                - generic [ref=f1e471]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e472]: "75"
+              - generic [ref=f1e473]:
+                - generic [ref=f1e474]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e475]:
+                  - /placeholder: Form cue or reminder
+                  - text: Use pull-ups instead when a bar is available. Rest 60–90 seconds.
+          - generic [ref=f1e476]:
+            - generic [ref=f1e477]:
+              - generic [ref=f1e478]: WORKOUT 3
+              - button "Delete workout" [ref=f1e479]
+            - generic [ref=f1e483]:
+              - generic [ref=f1e484]: Workout name
+              - textbox "Workout name" [ref=f1e485]:
+                - /placeholder: e.g. Push-ups
+                - text: Pike push-ups
+            - generic [ref=f1e486]:
+              - generic [ref=f1e487]:
+                - generic [ref=f1e488]: Workout type
+                - combobox "Workout type" [ref=f1e489]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e490]:
+                - generic [ref=f1e491]: Sets
+                - spinbutton "Sets" [ref=f1e492]: "3"
+              - generic [ref=f1e493]:
+                - generic [ref=f1e494]: Reps per set
+                - textbox "Reps per set" [ref=f1e495]:
+                  - /placeholder: e.g. 10–12
+                  - text: 8–12 reps
+              - generic [ref=f1e496]:
+                - generic [ref=f1e497]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e498]: "30"
+              - generic [ref=f1e499]:
+                - generic [ref=f1e500]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e501]: "75"
+              - generic [ref=f1e502]:
+                - generic [ref=f1e503]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e504]:
+                  - /placeholder: Form cue or reminder
+                  - text: Rest 60–90 seconds between sets.
+          - generic [ref=f1e505]:
+            - generic [ref=f1e506]:
+              - generic [ref=f1e507]: WORKOUT 4
+              - button "Delete workout" [ref=f1e508]
+            - generic [ref=f1e512]:
+              - generic [ref=f1e513]: Workout name
+              - textbox "Workout name" [ref=f1e514]:
+                - /placeholder: e.g. Push-ups
+                - text: Side plank (each side)
+            - generic [ref=f1e515]:
+              - generic [ref=f1e516]:
+                - generic [ref=f1e517]: Workout type
+                - combobox "Workout type" [ref=f1e518]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e519]:
+                - generic [ref=f1e520]: Sets
+                - spinbutton "Sets" [ref=f1e521]: "3"
+              - generic [ref=f1e522]:
+                - generic [ref=f1e523]: Target label
+                - textbox "Target label" [ref=f1e524]:
+                  - /placeholder: Optional
+                  - text: 30–45 sec each side
+              - generic [ref=f1e525]:
+                - generic [ref=f1e526]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e527]: "80"
+              - generic [ref=f1e528]:
+                - generic [ref=f1e529]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e530]: "30"
+              - generic [ref=f1e531]:
+                - generic [ref=f1e532]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e533]:
+                  - /placeholder: Form cue or reminder
+                  - text: Hold each side for 30–45 seconds.
+          - generic [ref=f1e534]:
+            - generic [ref=f1e535]:
+              - generic [ref=f1e536]: WORKOUT 5
+              - button "Delete workout" [ref=f1e537]
+            - generic [ref=f1e541]:
+              - generic [ref=f1e542]: Workout name
+              - textbox "Workout name" [ref=f1e543]:
+                - /placeholder: e.g. Push-ups
+                - text: Leg raises
+            - generic [ref=f1e544]:
+              - generic [ref=f1e545]:
+                - generic [ref=f1e546]: Workout type
+                - combobox "Workout type" [ref=f1e547]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e548]:
+                - generic [ref=f1e549]: Sets
+                - spinbutton "Sets" [ref=f1e550]: "3"
+              - generic [ref=f1e551]:
+                - generic [ref=f1e552]: Reps per set
+                - textbox "Reps per set" [ref=f1e553]:
+                  - /placeholder: e.g. 10–12
+                  - text: 12–15 reps
+              - generic [ref=f1e554]:
+                - generic [ref=f1e555]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e556]: "30"
+              - generic [ref=f1e557]:
+                - generic [ref=f1e558]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e559]: "50"
+              - generic [ref=f1e560]:
+                - generic [ref=f1e561]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e562]:
+                  - /placeholder: Form cue or reminder
+                  - text: Lower slowly for better control. Rest 45–60 seconds.
+          - generic [ref=f1e563]:
+            - generic [ref=f1e564]:
+              - generic [ref=f1e565]: WORKOUT 6
+              - button "Delete workout" [ref=f1e566]
+            - generic [ref=f1e570]:
+              - generic [ref=f1e571]: Workout name
+              - textbox "Workout name" [ref=f1e572]:
+                - /placeholder: e.g. Push-ups
+                - text: Mountain climbers
+            - generic [ref=f1e573]:
+              - generic [ref=f1e574]:
+                - generic [ref=f1e575]: Workout type
+                - combobox "Workout type" [ref=f1e576]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e577]:
+                - generic [ref=f1e578]: Sets
+                - spinbutton "Sets" [ref=f1e579]: "3"
+              - generic [ref=f1e580]:
+                - generic [ref=f1e581]: Target label
+                - textbox "Target label" [ref=f1e582]:
+                  - /placeholder: Optional
+                  - text: 30–40 seconds
+              - generic [ref=f1e583]:
+                - generic [ref=f1e584]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e585]: "35"
+              - generic [ref=f1e586]:
+                - generic [ref=f1e587]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e588]: "45"
+              - generic [ref=f1e589]:
+                - generic [ref=f1e590]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e591]:
+                  - /placeholder: Form cue or reminder
+                  - text: Keep the core braced and hips controlled.
+        - button "Add workout" [ref=f1e592]
+      - generic [ref=f1e594]:
+        - generic [ref=f1e595]:
+          - generic [ref=f1e596]: "03"
+          - generic [ref=f1e597]:
+            - generic [ref=f1e598]: Section name optional
+            - textbox "Section name optional" [ref=f1e599]:
+              - /placeholder: Section 3
+              - text: Intermediate upper core
+          - button "Delete section" [ref=f1e600]
+        - generic [ref=f1e604]:
+          - generic [ref=f1e605]:
+            - generic [ref=f1e606]:
+              - generic [ref=f1e607]: WORKOUT 1
+              - button "Delete workout" [ref=f1e608]
+            - generic [ref=f1e612]:
+              - generic [ref=f1e613]: Workout name
+              - textbox "Workout name" [ref=f1e614]:
+                - /placeholder: e.g. Push-ups
+                - text: Crunches
+            - generic [ref=f1e615]:
+              - generic [ref=f1e616]:
+                - generic [ref=f1e617]: Workout type
+                - combobox "Workout type" [ref=f1e618]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e619]:
+                - generic [ref=f1e620]: Sets
+                - spinbutton "Sets" [ref=f1e621]: "3"
+              - generic [ref=f1e622]:
+                - generic [ref=f1e623]: Reps per set
+                - textbox "Reps per set" [ref=f1e624]:
+                  - /placeholder: e.g. 10–12
+                  - text: 20 reps
+              - generic [ref=f1e625]:
+                - generic [ref=f1e626]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e627]: "30"
+              - generic [ref=f1e628]:
+                - generic [ref=f1e629]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e630]: "40"
+              - generic [ref=f1e631]:
+                - generic [ref=f1e632]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e633]:
+                  - /placeholder: Form cue or reminder
+                  - text: Focus on curling the upper trunk, not pulling the neck.
+          - generic [ref=f1e634]:
+            - generic [ref=f1e635]:
+              - generic [ref=f1e636]: WORKOUT 2
+              - button "Delete workout" [ref=f1e637]
+            - generic [ref=f1e641]:
+              - generic [ref=f1e642]: Workout name
+              - textbox "Workout name" [ref=f1e643]:
+                - /placeholder: e.g. Push-ups
+                - text: Toe touches
+            - generic [ref=f1e644]:
+              - generic [ref=f1e645]:
+                - generic [ref=f1e646]: Workout type
+                - combobox "Workout type" [ref=f1e647]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e648]:
+                - generic [ref=f1e649]: Sets
+                - spinbutton "Sets" [ref=f1e650]: "3"
+              - generic [ref=f1e651]:
+                - generic [ref=f1e652]: Reps per set
+                - textbox "Reps per set" [ref=f1e653]:
+                  - /placeholder: e.g. 10–12
+                  - text: 15 reps
+              - generic [ref=f1e654]:
+                - generic [ref=f1e655]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e656]: "30"
+              - generic [ref=f1e657]:
+                - generic [ref=f1e658]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e659]: "40"
+              - generic [ref=f1e660]:
+                - generic [ref=f1e661]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e662]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e663]:
+            - generic [ref=f1e664]:
+              - generic [ref=f1e665]: WORKOUT 3
+              - button "Delete workout" [ref=f1e666]
+            - generic [ref=f1e670]:
+              - generic [ref=f1e671]: Workout name
+              - textbox "Workout name" [ref=f1e672]:
+                - /placeholder: e.g. Push-ups
+                - text: Reverse crunches
+            - generic [ref=f1e673]:
+              - generic [ref=f1e674]:
+                - generic [ref=f1e675]: Workout type
+                - combobox "Workout type" [ref=f1e676]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e677]:
+                - generic [ref=f1e678]: Sets
+                - spinbutton "Sets" [ref=f1e679]: "3"
+              - generic [ref=f1e680]:
+                - generic [ref=f1e681]: Reps per set
+                - textbox "Reps per set" [ref=f1e682]:
+                  - /placeholder: e.g. 10–12
+                  - text: 12 reps
+              - generic [ref=f1e683]:
+                - generic [ref=f1e684]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e685]: "30"
+              - generic [ref=f1e686]:
+                - generic [ref=f1e687]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e688]: "40"
+              - generic [ref=f1e689]:
+                - generic [ref=f1e690]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e691]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e692]:
+            - generic [ref=f1e693]:
+              - generic [ref=f1e694]: WORKOUT 4
+              - button "Delete workout" [ref=f1e695]
+            - generic [ref=f1e699]:
+              - generic [ref=f1e700]: Workout name
+              - textbox "Workout name" [ref=f1e701]:
+                - /placeholder: e.g. Push-ups
+                - text: Hollow body hold
+            - generic [ref=f1e702]:
+              - generic [ref=f1e703]:
+                - generic [ref=f1e704]: Workout type
+                - combobox "Workout type" [ref=f1e705]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e706]:
+                - generic [ref=f1e707]: Sets
+                - spinbutton "Sets" [ref=f1e708]: "3"
+              - generic [ref=f1e709]:
+                - generic [ref=f1e710]: Target label
+                - textbox "Target label" [ref=f1e711]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e712]:
+                - generic [ref=f1e713]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e714]: "25"
+              - generic [ref=f1e715]:
+                - generic [ref=f1e716]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e717]: "40"
+              - generic [ref=f1e718]:
+                - generic [ref=f1e719]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e720]:
+                  - /placeholder: Form cue or reminder
+                  - text: Bend the knees to scale while keeping the lower back down.
+        - button "Add workout" [ref=f1e721]
+      - generic [ref=f1e723]:
+        - generic [ref=f1e724]:
+          - generic [ref=f1e725]: "04"
+          - generic [ref=f1e726]:
+            - generic [ref=f1e727]: Section name optional
+            - textbox "Section name optional" [ref=f1e728]:
+              - /placeholder: Section 4
+              - text: Finisher (optional)
+          - button "Delete section" [ref=f1e729]
+        - generic [ref=f1e733]:
+          - generic [ref=f1e734]:
+            - generic [ref=f1e735]:
+              - generic [ref=f1e736]: WORKOUT 1
+              - button "Delete workout" [ref=f1e737]
+            - generic [ref=f1e741]:
+              - generic [ref=f1e742]: Workout name
+              - textbox "Workout name" [ref=f1e743]:
+                - /placeholder: e.g. Push-ups
+                - text: Push-ups
+            - generic [ref=f1e744]:
+              - generic [ref=f1e745]:
+                - generic [ref=f1e746]: Workout type
+                - combobox "Workout type" [ref=f1e747]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e748]:
+                - generic [ref=f1e749]: Sets
+                - spinbutton "Sets" [ref=f1e750]: "3"
+              - generic [ref=f1e751]:
+                - generic [ref=f1e752]: Reps per set
+                - textbox "Reps per set" [ref=f1e753]:
+                  - /placeholder: e.g. 10–12
+                  - text: 15 reps
+              - generic [ref=f1e754]:
+                - generic [ref=f1e755]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e756]: "35"
+              - generic [ref=f1e757]:
+                - generic [ref=f1e758]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e759]: "0"
+              - generic [ref=f1e760]:
+                - generic [ref=f1e761]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e762]:
+                  - /placeholder: Form cue or reminder
+                  - text: Complete as a circuit for 3 rounds.
+          - generic [ref=f1e763]:
+            - generic [ref=f1e764]:
+              - generic [ref=f1e765]: WORKOUT 2
+              - button "Delete workout" [ref=f1e766]
+            - generic [ref=f1e770]:
+              - generic [ref=f1e771]: Workout name
+              - textbox "Workout name" [ref=f1e772]:
+                - /placeholder: e.g. Push-ups
+                - text: Mountain climbers
+            - generic [ref=f1e773]:
+              - generic [ref=f1e774]:
+                - generic [ref=f1e775]: Workout type
+                - combobox "Workout type" [ref=f1e776]:
+                  - option "Reps" [selected]
+                  - option "Timed"
+              - generic [ref=f1e777]:
+                - generic [ref=f1e778]: Sets
+                - spinbutton "Sets" [ref=f1e779]: "3"
+              - generic [ref=f1e780]:
+                - generic [ref=f1e781]: Reps per set
+                - textbox "Reps per set" [ref=f1e782]:
+                  - /placeholder: e.g. 10–12
+                  - text: 20 each leg
+              - generic [ref=f1e783]:
+                - generic [ref=f1e784]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e785]: "40"
+              - generic [ref=f1e786]:
+                - generic [ref=f1e787]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e788]: "0"
+              - generic [ref=f1e789]:
+                - generic [ref=f1e790]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e791]:
+                  - /placeholder: Form cue or reminder
+                  - text: Continue the circuit without rest.
+          - generic [ref=f1e792]:
+            - generic [ref=f1e793]:
+              - generic [ref=f1e794]: WORKOUT 3
+              - button "Delete workout" [ref=f1e795]
+            - generic [ref=f1e799]:
+              - generic [ref=f1e800]: Workout name
+              - textbox "Workout name" [ref=f1e801]:
+                - /placeholder: e.g. Push-ups
+                - text: Plank
+            - generic [ref=f1e802]:
+              - generic [ref=f1e803]:
+                - generic [ref=f1e804]: Workout type
+                - combobox "Workout type" [ref=f1e805]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e806]:
+                - generic [ref=f1e807]: Sets
+                - spinbutton "Sets" [ref=f1e808]: "3"
+              - generic [ref=f1e809]:
+                - generic [ref=f1e810]: Target label
+                - textbox "Target label" [ref=f1e811]:
+                  - /placeholder: Optional
+                  - text: 30 seconds
+              - generic [ref=f1e812]:
+                - generic [ref=f1e813]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e814]: "30"
+              - generic [ref=f1e815]:
+                - generic [ref=f1e816]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e817]: "30"
+              - generic [ref=f1e818]:
+                - generic [ref=f1e819]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e820]:
+                  - /placeholder: Form cue or reminder
+                  - text: Rest 30 seconds after each round.
+        - button "Add workout" [ref=f1e821]
+      - generic [ref=f1e823]:
+        - generic [ref=f1e824]:
+          - generic [ref=f1e825]: "05"
+          - generic [ref=f1e826]:
+            - generic [ref=f1e827]: Section name optional
+            - textbox "Section name optional" [ref=f1e828]:
+              - /placeholder: Section 5
+              - text: Cool-down
+          - button "Delete section" [ref=f1e829]
+        - generic [ref=f1e833]:
+          - generic [ref=f1e834]:
+            - generic [ref=f1e835]:
+              - generic [ref=f1e836]: WORKOUT 1
+              - button "Delete workout" [ref=f1e837]
+            - generic [ref=f1e841]:
+              - generic [ref=f1e842]: Workout name
+              - textbox "Workout name" [ref=f1e843]:
+                - /placeholder: e.g. Push-ups
+                - text: Chest stretch
+            - generic [ref=f1e844]:
+              - generic [ref=f1e845]:
+                - generic [ref=f1e846]: Workout type
+                - combobox "Workout type" [ref=f1e847]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e848]:
+                - generic [ref=f1e849]: Sets
+                - spinbutton "Sets" [ref=f1e850]: "1"
+              - generic [ref=f1e851]:
+                - generic [ref=f1e852]: Target label
+                - textbox "Target label" [ref=f1e853]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e854]:
+                - generic [ref=f1e855]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e856]: "25"
+              - generic [ref=f1e857]:
+                - generic [ref=f1e858]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e859]: "0"
+              - generic [ref=f1e860]:
+                - generic [ref=f1e861]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e862]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e863]:
+            - generic [ref=f1e864]:
+              - generic [ref=f1e865]: WORKOUT 2
+              - button "Delete workout" [ref=f1e866]
+            - generic [ref=f1e870]:
+              - generic [ref=f1e871]: Workout name
+              - textbox "Workout name" [ref=f1e872]:
+                - /placeholder: e.g. Push-ups
+                - text: Shoulder stretch
+            - generic [ref=f1e873]:
+              - generic [ref=f1e874]:
+                - generic [ref=f1e875]: Workout type
+                - combobox "Workout type" [ref=f1e876]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e877]:
+                - generic [ref=f1e878]: Sets
+                - spinbutton "Sets" [ref=f1e879]: "1"
+              - generic [ref=f1e880]:
+                - generic [ref=f1e881]: Target label
+                - textbox "Target label" [ref=f1e882]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e883]:
+                - generic [ref=f1e884]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e885]: "25"
+              - generic [ref=f1e886]:
+                - generic [ref=f1e887]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e888]: "0"
+              - generic [ref=f1e889]:
+                - generic [ref=f1e890]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e891]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e892]:
+            - generic [ref=f1e893]:
+              - generic [ref=f1e894]: WORKOUT 3
+              - button "Delete workout" [ref=f1e895]
+            - generic [ref=f1e899]:
+              - generic [ref=f1e900]: Workout name
+              - textbox "Workout name" [ref=f1e901]:
+                - /placeholder: e.g. Push-ups
+                - text: Triceps stretch
+            - generic [ref=f1e902]:
+              - generic [ref=f1e903]:
+                - generic [ref=f1e904]: Workout type
+                - combobox "Workout type" [ref=f1e905]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e906]:
+                - generic [ref=f1e907]: Sets
+                - spinbutton "Sets" [ref=f1e908]: "1"
+              - generic [ref=f1e909]:
+                - generic [ref=f1e910]: Target label
+                - textbox "Target label" [ref=f1e911]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e912]:
+                - generic [ref=f1e913]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e914]: "25"
+              - generic [ref=f1e915]:
+                - generic [ref=f1e916]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e917]: "0"
+              - generic [ref=f1e918]:
+                - generic [ref=f1e919]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e920]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e921]:
+            - generic [ref=f1e922]:
+              - generic [ref=f1e923]: WORKOUT 4
+              - button "Delete workout" [ref=f1e924]
+            - generic [ref=f1e928]:
+              - generic [ref=f1e929]: Workout name
+              - textbox "Workout name" [ref=f1e930]:
+                - /placeholder: e.g. Push-ups
+                - text: Child's pose
+            - generic [ref=f1e931]:
+              - generic [ref=f1e932]:
+                - generic [ref=f1e933]: Workout type
+                - combobox "Workout type" [ref=f1e934]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e935]:
+                - generic [ref=f1e936]: Sets
+                - spinbutton "Sets" [ref=f1e937]: "1"
+              - generic [ref=f1e938]:
+                - generic [ref=f1e939]: Target label
+                - textbox "Target label" [ref=f1e940]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e941]:
+                - generic [ref=f1e942]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e943]: "25"
+              - generic [ref=f1e944]:
+                - generic [ref=f1e945]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e946]: "0"
+              - generic [ref=f1e947]:
+                - generic [ref=f1e948]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e949]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e950]:
+            - generic [ref=f1e951]:
+              - generic [ref=f1e952]: WORKOUT 5
+              - button "Delete workout" [ref=f1e953]
+            - generic [ref=f1e957]:
+              - generic [ref=f1e958]: Workout name
+              - textbox "Workout name" [ref=f1e959]:
+                - /placeholder: e.g. Push-ups
+                - text: Cobra stretch
+            - generic [ref=f1e960]:
+              - generic [ref=f1e961]:
+                - generic [ref=f1e962]: Workout type
+                - combobox "Workout type" [ref=f1e963]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e964]:
+                - generic [ref=f1e965]: Sets
+                - spinbutton "Sets" [ref=f1e966]: "1"
+              - generic [ref=f1e967]:
+                - generic [ref=f1e968]: Target label
+                - textbox "Target label" [ref=f1e969]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e970]:
+                - generic [ref=f1e971]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e972]: "25"
+              - generic [ref=f1e973]:
+                - generic [ref=f1e974]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e975]: "0"
+              - generic [ref=f1e976]:
+                - generic [ref=f1e977]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e978]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e979]:
+            - generic [ref=f1e980]:
+              - generic [ref=f1e981]: WORKOUT 6
+              - button "Delete workout" [ref=f1e982]
+            - generic [ref=f1e986]:
+              - generic [ref=f1e987]: Workout name
+              - textbox "Workout name" [ref=f1e988]:
+                - /placeholder: e.g. Push-ups
+                - text: Cat-cow stretch
+            - generic [ref=f1e989]:
+              - generic [ref=f1e990]:
+                - generic [ref=f1e991]: Workout type
+                - combobox "Workout type" [ref=f1e992]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e993]:
+                - generic [ref=f1e994]: Sets
+                - spinbutton "Sets" [ref=f1e995]: "1"
+              - generic [ref=f1e996]:
+                - generic [ref=f1e997]: Target label
+                - textbox "Target label" [ref=f1e998]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e999]:
+                - generic [ref=f1e1000]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e1001]: "25"
+              - generic [ref=f1e1002]:
+                - generic [ref=f1e1003]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e1004]: "0"
+              - generic [ref=f1e1005]:
+                - generic [ref=f1e1006]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e1007]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e1008]:
+            - generic [ref=f1e1009]:
+              - generic [ref=f1e1010]: WORKOUT 7
+              - button "Delete workout" [ref=f1e1011]
+            - generic [ref=f1e1015]:
+              - generic [ref=f1e1016]: Workout name
+              - textbox "Workout name" [ref=f1e1017]:
+                - /placeholder: e.g. Push-ups
+                - text: Lat stretch
+            - generic [ref=f1e1018]:
+              - generic [ref=f1e1019]:
+                - generic [ref=f1e1020]: Workout type
+                - combobox "Workout type" [ref=f1e1021]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e1022]:
+                - generic [ref=f1e1023]: Sets
+                - spinbutton "Sets" [ref=f1e1024]: "1"
+              - generic [ref=f1e1025]:
+                - generic [ref=f1e1026]: Target label
+                - textbox "Target label" [ref=f1e1027]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e1028]:
+                - generic [ref=f1e1029]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e1030]: "25"
+              - generic [ref=f1e1031]:
+                - generic [ref=f1e1032]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e1033]: "0"
+              - generic [ref=f1e1034]:
+                - generic [ref=f1e1035]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e1036]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e1037]:
+            - generic [ref=f1e1038]:
+              - generic [ref=f1e1039]: WORKOUT 8
+              - button "Delete workout" [ref=f1e1040]
+            - generic [ref=f1e1044]:
+              - generic [ref=f1e1045]: Workout name
+              - textbox "Workout name" [ref=f1e1046]:
+                - /placeholder: e.g. Push-ups
+                - text: Neck stretch
+            - generic [ref=f1e1047]:
+              - generic [ref=f1e1048]:
+                - generic [ref=f1e1049]: Workout type
+                - combobox "Workout type" [ref=f1e1050]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e1051]:
+                - generic [ref=f1e1052]: Sets
+                - spinbutton "Sets" [ref=f1e1053]: "1"
+              - generic [ref=f1e1054]:
+                - generic [ref=f1e1055]: Target label
+                - textbox "Target label" [ref=f1e1056]:
+                  - /placeholder: Optional
+                  - text: 20–30 seconds
+              - generic [ref=f1e1057]:
+                - generic [ref=f1e1058]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e1059]: "25"
+              - generic [ref=f1e1060]:
+                - generic [ref=f1e1061]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e1062]: "0"
+              - generic [ref=f1e1063]:
+                - generic [ref=f1e1064]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e1065]:
+                  - /placeholder: Form cue or reminder
+          - generic [ref=f1e1066]:
+            - generic [ref=f1e1067]:
+              - generic [ref=f1e1068]: WORKOUT 9
+              - button "Delete workout" [ref=f1e1069]
+            - generic [ref=f1e1073]:
+              - generic [ref=f1e1074]: Workout name
+              - textbox "Workout name" [ref=f1e1075]:
+                - /placeholder: e.g. Push-ups
+                - text: Easy walk
+            - generic [ref=f1e1076]:
+              - generic [ref=f1e1077]:
+                - generic [ref=f1e1078]: Workout type
+                - combobox "Workout type" [ref=f1e1079]:
+                  - option "Reps"
+                  - option "Timed" [selected]
+              - generic [ref=f1e1080]:
+                - generic [ref=f1e1081]: Sets
+                - spinbutton "Sets" [ref=f1e1082]: "1"
+              - generic [ref=f1e1083]:
+                - generic [ref=f1e1084]: Target label
+                - textbox "Target label" [ref=f1e1085]:
+                  - /placeholder: Optional
+                  - text: 2 minutes
+              - generic [ref=f1e1086]:
+                - generic [ref=f1e1087]: Work duration seconds
+                - spinbutton "Work duration seconds" [ref=f1e1088]: "120"
+              - generic [ref=f1e1089]:
+                - generic [ref=f1e1090]: Rest duration seconds
+                - spinbutton "Rest duration seconds" [ref=f1e1091]: "0"
+              - generic [ref=f1e1092]:
+                - generic [ref=f1e1093]: Coach note optional
+                - textbox "Coach note optional" [ref=f1e1094]:
+                  - /placeholder: Form cue or reminder
+                  - text: Walk around to gradually lower your heart rate.
+        - button "Add workout" [ref=f1e1095]
+    - button "Add section" [ref=f1e1097]
+    - generic [ref=f1e1099]:
+      - button "Save plan" [ref=f1e1100]
+      - button "Save & load plan" [ref=f1e1105]

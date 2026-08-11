@@ -10,8 +10,8 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@vite-pwa/assets-generator": "latest",
     "lucide-react": "latest",
+    "motion": "latest",
     "react": "latest",
     "react-dom": "latest"
   },

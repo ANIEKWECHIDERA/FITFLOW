@@ -1,0 +1,91 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "FitFlow home" [ref=e5]:
+      - generic [ref=e10]: FITFLOW
+    - button "Open plan menu" [ref=e12]: CA
+  - main [ref=e91]:
+    - generic [ref=e92]:
+      - paragraph [ref=e93]: YOUR PROGRAM
+      - heading "The flow, mapped out." [level=1] [ref=e94]: The flow,mapped out.
+      - paragraph [ref=e95]: Full Upper Body + Core Workout (Intermediate) · scheduled 2–3 days each week.
+      - generic [ref=e96]:
+        - generic [ref=e97]: 49 mins
+        - generic [ref=e101]: 56 sets
+        - generic [ref=e104]: 5 sections
+      - generic [ref=e111]:
+        - article [ref=e112]:
+          - generic [ref=e113]:
+            - button "01 Warm-up 6 workouts" [ref=e114]:
+              - generic [ref=e115]: "01"
+              - generic [ref=e116]:
+                - generic [ref=e117]: Warm-up
+                - generic [ref=e118]: 6 workouts
+            - button "Start Warm-up" [ref=e121] [cursor=pointer]
+          - generic [ref=e124]:
+            - generic [ref=e125]:
+              - generic [ref=e133]:
+                - text: Arm circles
+                - generic [ref=e134]: 1 set · 60s
+              - button "Start Arm circles" [ref=e135] [cursor=pointer]
+            - generic [ref=e138]:
+              - generic [ref=e146]:
+                - text: Jumping jacks
+                - generic [ref=e147]: 1 set · 60s
+              - button "Start Jumping jacks" [ref=e148] [cursor=pointer]
+            - generic [ref=e151]:
+              - generic [ref=e159]:
+                - text: Shoulder rolls
+                - generic [ref=e160]: 1 set · 30s
+              - button "Start Shoulder rolls" [ref=e161] [cursor=pointer]
+            - generic [ref=e164]:
+              - generic [ref=e172]:
+                - text: High knees
+                - generic [ref=e173]: 1 set · 60s
+              - button "Start High knees" [ref=e174] [cursor=pointer]
+            - generic [ref=e177]:
+              - generic [ref=e185]:
+                - text: Dynamic chest stretch
+                - generic [ref=e186]: 1 set · 60s
+              - button "Start Dynamic chest stretch" [ref=e187] [cursor=pointer]
+            - generic [ref=e190]:
+              - generic [ref=e198]:
+                - text: Cat-cow stretch
+                - generic [ref=e199]: 1 set · 60s
+              - button "Start Cat-cow stretch" [ref=e200] [cursor=pointer]
+        - article [ref=e203]:
+          - generic [ref=e204]:
+            - button "02 Main workout 6 workouts" [ref=e205]:
+              - generic [ref=e206]: "02"
+              - generic [ref=e207]:
+                - generic [ref=e208]: Main workout
+                - generic [ref=e209]: 6 workouts
+            - button "Start Main workout" [ref=e212] [cursor=pointer]
+        - article [ref=e215]:
+          - generic [ref=e216]:
+            - button "03 Intermediate upper core 4 workouts" [ref=e217]:
+              - generic [ref=e218]: "03"
+              - generic [ref=e219]:
+                - generic [ref=e220]: Intermediate upper core
+                - generic [ref=e221]: 4 workouts
+            - button "Start Intermediate upper core" [ref=e224] [cursor=pointer]
+        - article [ref=e227]:
+          - generic [ref=e228]:
+            - button "04 Finisher (optional) 3 workouts" [ref=e229]:
+              - generic [ref=e230]: "04"
+              - generic [ref=e231]:
+                - generic [ref=e232]: Finisher (optional)
+                - generic [ref=e233]: 3 workouts
+            - button "Start Finisher (optional)" [ref=e236] [cursor=pointer]
+        - article [ref=e239]:
+          - generic [ref=e240]:
+            - button "05 Cool-down 9 workouts" [ref=e241]:
+              - generic [ref=e242]: "05"
+              - generic [ref=e243]:
+                - generic [ref=e244]: Cool-down
+                - generic [ref=e245]: 9 workouts
+            - button "Start Cool-down" [ref=e248] [cursor=pointer]
+      - button "Begin this flow" [ref=e251]
+  - navigation "Main navigation" [ref=e73]:
+    - button "Today" [ref=e74]
+    - button "Plan" [active] [ref=e79]
+    - button "Progress" [ref=e87]

@@ -1,0 +1,53 @@
+- generic [ref=e3]:
+  - banner [ref=e4]:
+    - button "FitFlow home" [ref=e5]:
+      - generic [ref=e10]: FITFLOW
+    - button "Open plan menu" [ref=e12]: CA
+  - main [ref=e13]:
+    - generic [ref=e14]:
+      - generic [ref=e15]:
+        - paragraph [ref=e16]: Tuesday, August 11
+        - heading "Ready when you are." [level=1] [ref=e17]: Ready whenyou are.
+        - paragraph [ref=e18]: One session at a time. Keep the flow going.
+      - generic [ref=e19]:
+        - generic [ref=e20]:
+          - generic [ref=e21]: TODAY'S FLOW
+          - generic [ref=e22]: —
+        - generic [ref=e32]:
+          - text: rest
+          - heading "Rest & recover" [level=2] [ref=e33]
+          - paragraph [ref=e34]: Recovery is part of the work.
+        - generic [ref=e35]: Take it easy. Your next flow is waiting.
+      - generic [ref=e36]:
+        - generic [ref=e37]:
+          - generic [ref=e38]:
+            - text: THIS WEEK
+            - heading "Your rhythm" [level=3] [ref=e39]
+          - generic [ref=e40]: 0 days streak
+        - generic [ref=e43]:
+          - generic [ref=e44]:
+            - generic [ref=e45]: M
+            - generic [ref=e46]: "10"
+          - generic [ref=e48]:
+            - generic [ref=e49]: T
+            - generic [ref=e50]: "11"
+          - generic [ref=e52]:
+            - generic [ref=e53]: W
+            - generic [ref=e54]: "12"
+          - generic [ref=e56]:
+            - generic [ref=e57]: T
+            - generic [ref=e58]: "13"
+          - generic [ref=e60]:
+            - generic [ref=e61]: F
+            - generic [ref=e62]: "14"
+          - generic [ref=e64]:
+            - generic [ref=e65]: S
+            - generic [ref=e66]: "15"
+          - generic [ref=e68]:
+            - generic [ref=e69]: S
+            - generic [ref=e70]: "16"
+      - blockquote [ref=e72]: “Motivation gets you started. Flow keeps you moving.”
+  - navigation "Main navigation" [ref=e73]:
+    - button "Today" [ref=e74]
+    - button "Plan" [ref=e79]
+    - button "Progress" [ref=e87]
