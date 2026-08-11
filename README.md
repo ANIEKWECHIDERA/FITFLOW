@@ -19,7 +19,10 @@ npm run preview
 ## Included in this MVP
 
 - Today dashboard with weekly schedule
-- Full upper-body and core workout plan
+- Create, edit, load, and delete workout plans from the profile menu
+- Optional workout sections with dynamic exercises, sets, reps, work, and rest timing
+- Plan-specific workout days, streaks, history, and automatically calculated metrics
+- A full upper-body and core plan included as the editable default
 - Timestamp-based timed intervals and rep-based set completion
 - Pause, resume, stop, partial-session saving, and automatic transitions
 - Web Audio cues and best-effort Screen Wake Lock

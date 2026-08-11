@@ -16,6 +16,15 @@ export type WorkoutBlock = {
   exercises: Exercise[]
 }
 
+export type WorkoutPlan = {
+  id: string
+  name: string
+  workoutDays: number[]
+  blocks: WorkoutBlock[]
+  createdAt: string
+  updatedAt: string
+}
+
 export const workoutBlocks: WorkoutBlock[] = [
   {
     id: 'warmup', name: 'Warm-up', shortName: '01', exercises: [
@@ -52,16 +61,49 @@ export const workoutBlocks: WorkoutBlock[] = [
   }
 ]
 
-export type DayPlan = { day: string; short: string; kind: 'strength' | 'run' | 'mobility' | 'rest'; title: string; duration: string }
+export const DAY_OPTIONS = [
+  { value: 1, name: 'Monday', short: 'M' },
+  { value: 2, name: 'Tuesday', short: 'T' },
+  { value: 3, name: 'Wednesday', short: 'W' },
+  { value: 4, name: 'Thursday', short: 'T' },
+  { value: 5, name: 'Friday', short: 'F' },
+  { value: 6, name: 'Saturday', short: 'S' },
+  { value: 0, name: 'Sunday', short: 'S' },
+] as const
 
-export const week: DayPlan[] = [
-  { day: 'Monday', short: 'M', kind: 'strength', title: 'Upper body + core', duration: '42 min' },
-  { day: 'Tuesday', short: 'T', kind: 'run', title: 'Easy run', duration: '25 min' },
-  { day: 'Wednesday', short: 'W', kind: 'strength', title: 'Upper body + core', duration: '42 min' },
-  { day: 'Thursday', short: 'T', kind: 'mobility', title: 'Mobility flow', duration: '20 min' },
-  { day: 'Friday', short: 'F', kind: 'strength', title: 'Upper body + core', duration: '42 min' },
-  { day: 'Saturday', short: 'S', kind: 'run', title: 'Long run', duration: '45 min' },
-  { day: 'Sunday', short: 'S', kind: 'rest', title: 'Rest & recover', duration: '—' },
-]
+const now = new Date().toISOString()
 
-export const totalSets = workoutBlocks.reduce((sum, block) => sum + block.exercises.reduce((n, exercise) => n + exercise.sets, 0), 0)
+export const defaultPlan: WorkoutPlan = {
+  id: 'fitflow-upper-core',
+  name: 'Upper body + core',
+  workoutDays: [1, 3, 5],
+  blocks: workoutBlocks,
+  createdAt: now,
+  updatedAt: now,
+}
+
+export function getPlanMetrics(plan: WorkoutPlan) {
+  const sets = plan.blocks.reduce((sum, block) => sum + block.exercises.reduce((count, exercise) => count + exercise.sets, 0), 0)
+  const seconds = plan.blocks.reduce((sum, block) => sum + block.exercises.reduce((count, exercise) => {
+    const work = (exercise.durationSeconds ?? 45) * exercise.sets
+    const rest = exercise.restSeconds * Math.max(0, exercise.sets - 1)
+    return count + work + rest
+  }, 0), 0)
+  return { sets, blocks: plan.blocks.length, seconds, minutes: Math.max(1, Math.ceil(seconds / 60)) }
+}
+
+export function createEmptyPlan(): WorkoutPlan {
+  const timestamp = new Date().toISOString()
+  return {
+    id: crypto.randomUUID(),
+    name: '',
+    workoutDays: [1, 3, 5],
+    blocks: [{ id: crypto.randomUUID(), name: '', shortName: '01', exercises: [createEmptyExercise()] }],
+    createdAt: timestamp,
+    updatedAt: timestamp,
+  }
+}
+
+export function createEmptyExercise(): Exercise {
+  return { id: crypto.randomUUID(), name: '', type: 'reps', sets: 3, reps: '10', durationSeconds: 45, restSeconds: 60, note: '' }
+}

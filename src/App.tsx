@@ -1,26 +1,43 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react'
 import {
   Activity, ArrowLeft, BarChart3, CalendarDays, Check, ChevronRight, CircleStop,
-  Clock3, Dumbbell, Flame, Footprints, Home, Pause, Play, RotateCcw, Sparkles,
-  TimerReset, Volume2, Wind,
+  Clock3, Dumbbell, Flame, FolderOpen, Home, Menu, Pause, Pencil, Play, Plus,
+  RotateCcw, Sparkles, TimerReset, Volume2, Wind,
 } from 'lucide-react'
-import { totalSets, week, workoutBlocks, type DayPlan } from './data'
+import { DAY_OPTIONS, defaultPlan, getPlanMetrics, type WorkoutPlan } from './data'
 import { buildSteps, formatTime, type Step } from './player'
+import { PlanEditor, PlanLibrary } from './PlanManagement'
 
-type Screen = 'home' | 'plan' | 'progress'
-type Session = { id: string; date: string; title: string; durationSeconds: number; status: 'completed' | 'partial' }
+type Screen = 'home' | 'plan' | 'progress' | 'manage' | 'editor'
+type Session = { id: string; planId?: string; date: string; title: string; durationSeconds: number; status: 'completed' | 'partial' | 'skipped' }
+type DisplayDay = { day: string; short: string; kind: 'strength' | 'rest'; title: string; duration: string }
 
 const STORAGE_KEY = 'fitflow.sessions.v1'
-const isoDate = (date = new Date()) => date.toISOString().slice(0, 10)
+const PLANS_KEY = 'fitflow.plans.v1'
+const ACTIVE_PLAN_KEY = 'fitflow.active-plan.v1'
+const isoDate = (date = new Date()) => new Date(date.getTime() - date.getTimezoneOffset() * 60_000).toISOString().slice(0, 10)
 
 function loadSessions(): Session[] {
   try { return JSON.parse(localStorage.getItem(STORAGE_KEY) ?? '[]') as Session[] }
   catch { return [] }
 }
 
-function getTodayPlan(): DayPlan {
-  const jsDay = new Date().getDay()
-  return week[jsDay === 0 ? 6 : jsDay - 1]
+function loadPlans(): WorkoutPlan[] {
+  try {
+    const stored = JSON.parse(localStorage.getItem(PLANS_KEY) ?? '[]') as WorkoutPlan[]
+    return stored.length ? stored : [defaultPlan]
+  } catch { return [defaultPlan] }
+}
+
+function buildWeek(plan: WorkoutPlan): DisplayDay[] {
+  const metrics = getPlanMetrics(plan)
+  return DAY_OPTIONS.map((day) => ({
+    day: day.name,
+    short: day.short,
+    kind: plan.workoutDays.includes(day.value) ? 'strength' : 'rest',
+    title: plan.workoutDays.includes(day.value) ? plan.name : 'Rest & recover',
+    duration: plan.workoutDays.includes(day.value) ? `${metrics.minutes} min` : '—',
+  }))
 }
 
 function playCue(type: 'start' | 'rest' | 'tick' | 'finish') {
@@ -47,7 +64,15 @@ function App() {
   const [screen, setScreen] = useState<Screen>('home')
   const [playerOpen, setPlayerOpen] = useState(false)
   const [sessions, setSessions] = useState<Session[]>(loadSessions)
-  const today = getTodayPlan()
+  const [plans, setPlans] = useState<WorkoutPlan[]>(loadPlans)
+  const [activePlanId, setActivePlanId] = useState(() => localStorage.getItem(ACTIVE_PLAN_KEY) ?? loadPlans()[0].id)
+  const [editingPlan, setEditingPlan] = useState<WorkoutPlan | undefined>()
+  const [profileMenu, setProfileMenu] = useState(false)
+  const activePlan = plans.find((plan) => plan.id === activePlanId) ?? plans[0]
+  const week = useMemo(() => buildWeek(activePlan), [activePlan])
+  const todayIndex = new Date().getDay() === 0 ? 6 : new Date().getDay() - 1
+  const today = week[todayIndex]
+  const planSessions = useMemo(() => sessions.filter((item) => item.planId === activePlan.id || (!item.planId && activePlan.id === defaultPlan.id)), [activePlan.id, sessions])
 
   const saveSession = useCallback((session: Session) => {
     setSessions((current) => {
@@ -57,26 +82,61 @@ function App() {
     })
   }, [])
 
-  const completedDates = useMemo(() => new Set(sessions.filter((item) => item.status === 'completed').map((item) => item.date)), [sessions])
+  const completedDates = useMemo(() => new Set(planSessions.filter((item) => item.status === 'completed').map((item) => item.date)), [planSessions])
+  const skippedDates = useMemo(() => new Set(planSessions.filter((item) => item.status === 'skipped').map((item) => item.date)), [planSessions])
   const currentStreak = useMemo(() => {
     let streak = 0
     const cursor = new Date()
     for (let i = 0; i < 60; i += 1) {
-      const index = cursor.getDay() === 0 ? 6 : cursor.getDay() - 1
-      if (week[index].kind === 'rest') { cursor.setDate(cursor.getDate() - 1); continue }
+      if (!activePlan.workoutDays.includes(cursor.getDay())) { cursor.setDate(cursor.getDate() - 1); continue }
       if (completedDates.has(isoDate(cursor))) { streak += 1; cursor.setDate(cursor.getDate() - 1); continue }
       if (isoDate(cursor) === isoDate()) { cursor.setDate(cursor.getDate() - 1); continue }
       break
     }
     return streak
-  }, [completedDates])
+  }, [activePlan.workoutDays, completedDates])
 
   const logSimpleWorkout = () => saveSession({
-    id: crypto.randomUUID(), date: isoDate(), title: today.title, durationSeconds: 0, status: 'completed',
+    id: crypto.randomUUID(), planId: activePlan.id, date: isoDate(), title: activePlan.name, durationSeconds: 0, status: 'completed',
   })
 
+  const skipWorkout = () => saveSession({
+    id: crypto.randomUUID(), planId: activePlan.id, date: isoDate(), title: activePlan.name, durationSeconds: 0, status: 'skipped',
+  })
+
+  const loadPlan = (id: string) => {
+    setActivePlanId(id)
+    localStorage.setItem(ACTIVE_PLAN_KEY, id)
+    setScreen('home')
+  }
+
+  const savePlan = (plan: WorkoutPlan) => {
+    setPlans((current) => {
+      const exists = current.some((item) => item.id === plan.id)
+      const next = exists ? current.map((item) => item.id === plan.id ? plan : item) : [...current, plan]
+      localStorage.setItem(PLANS_KEY, JSON.stringify(next))
+      return next
+    })
+    loadPlan(plan.id)
+  }
+
+  const deletePlan = (id: string) => {
+    setPlans((current) => {
+      const next = current.filter((plan) => plan.id !== id)
+      localStorage.setItem(PLANS_KEY, JSON.stringify(next))
+      if (id === activePlanId && next[0]) {
+        setActivePlanId(next[0].id)
+        localStorage.setItem(ACTIVE_PLAN_KEY, next[0].id)
+      }
+      return next
+    })
+  }
+
+  if (screen === 'editor') return <PlanEditor initialPlan={editingPlan} onCancel={() => setScreen('manage')} onSave={savePlan} />
+  if (screen === 'manage') return <PlanLibrary plans={plans} activePlanId={activePlan.id} onBack={() => setScreen('home')} onLoad={loadPlan} onEdit={(plan) => { setEditingPlan(plan); setScreen('editor') }} onDelete={deletePlan} onNew={() => { setEditingPlan(undefined); setScreen('editor') }} />
+
   if (playerOpen) {
-    return <WorkoutPlayer onExit={() => setPlayerOpen(false)} onSave={(session) => { saveSession(session); setPlayerOpen(false); setScreen('progress') }} />
+    return <WorkoutPlayer plan={activePlan} onExit={() => setPlayerOpen(false)} onSave={(session) => { saveSession(session); setPlayerOpen(false); setScreen('progress') }} />
   }
 
   return (
@@ -86,13 +146,13 @@ function App() {
           <span className="brand-mark"><span /><span /><span /></span>
           <span>FITFLOW</span>
         </button>
-        <button className="avatar" aria-label="Profile">CA</button>
+        <div className="profile-wrap"><button className="avatar" aria-label="Open plan menu" aria-expanded={profileMenu} onClick={() => setProfileMenu((open) => !open)}>CA</button>{profileMenu && <div className="profile-menu"><div><span className="mini-label">ACTIVE PLAN</span><b>{activePlan.name}</b></div><button onClick={() => { setEditingPlan(undefined); setScreen('editor'); setProfileMenu(false) }}><Plus /> New plan</button><button onClick={() => { setScreen('manage'); setProfileMenu(false) }}><FolderOpen /> Load plan</button><button onClick={() => { setScreen('manage'); setProfileMenu(false) }}><Menu /> Manage plans</button><button onClick={() => { setEditingPlan(activePlan); setScreen('editor'); setProfileMenu(false) }}><Pencil /> Edit active plan</button></div>}</div>
       </header>
 
       <main>
-        {screen === 'home' && <HomeScreen today={today} streak={currentStreak} completedDates={completedDates} onStart={() => setPlayerOpen(true)} onLog={logSimpleWorkout} />}
-        {screen === 'plan' && <PlanScreen onStart={() => setPlayerOpen(true)} />}
-        {screen === 'progress' && <ProgressScreen sessions={sessions} streak={currentStreak} completedDates={completedDates} />}
+        {screen === 'home' && <HomeScreen plan={activePlan} week={week} today={today} streak={currentStreak} completedDates={completedDates} skippedDates={skippedDates} onStart={() => setPlayerOpen(true)} onLog={logSimpleWorkout} onSkip={skipWorkout} />}
+        {screen === 'plan' && <PlanScreen plan={activePlan} onStart={() => setPlayerOpen(true)} />}
+        {screen === 'progress' && <ProgressScreen plan={activePlan} sessions={planSessions} streak={currentStreak} completedDates={completedDates} />}
       </main>
 
       <nav className="bottom-nav" aria-label="Main navigation">
@@ -108,11 +168,14 @@ function NavButton({ active, icon, label, onClick }: { active: boolean; icon: Re
   return <button className={active ? 'nav-button active' : 'nav-button'} onClick={onClick}>{icon}<span>{label}</span></button>
 }
 
-function HomeScreen({ today, streak, completedDates, onStart, onLog }: { today: DayPlan; streak: number; completedDates: Set<string>; onStart: () => void; onLog: () => void }) {
+function HomeScreen({ plan, week, today, streak, completedDates, skippedDates, onStart, onLog, onSkip }: { plan: WorkoutPlan; week: DisplayDay[]; today: DisplayDay; streak: number; completedDates: Set<string>; skippedDates: Set<string>; onStart: () => void; onLog: () => void; onSkip: () => void }) {
+  const [confirmSkip, setConfirmSkip] = useState(false)
+  const metrics = getPlanMetrics(plan)
   const dateLabel = new Intl.DateTimeFormat('en', { weekday: 'long', month: 'long', day: 'numeric' }).format(new Date())
   const alreadyDone = completedDates.has(isoDate())
+  const alreadySkipped = skippedDates.has(isoDate())
   const canPlay = today.kind === 'strength'
-  const icon = today.kind === 'run' ? <Footprints /> : today.kind === 'mobility' ? <Wind /> : today.kind === 'rest' ? <Sparkles /> : <Dumbbell />
+  const icon = today.kind === 'rest' ? <Sparkles /> : <Dumbbell />
 
   return (
     <div className="screen home-screen">
@@ -131,18 +194,22 @@ function HomeScreen({ today, streak, completedDates, onStart, onLog }: { today: 
         <div className="workout-copy">
           <span className="workout-kind">{today.kind}</span>
           <h2>{today.title}</h2>
-          <p>{canPlay ? `${workoutBlocks.length} blocks · ${totalSets} focused sets` : today.kind === 'rest' ? 'Recovery is part of the work.' : 'Move at a pace you can sustain.'}</p>
+          <p>{canPlay ? `${metrics.blocks} blocks · ${metrics.sets} focused sets` : 'Recovery is part of the work.'}</p>
         </div>
         {alreadyDone ? (
           <button className="start-button done"><Check /> Completed today</button>
+        ) : alreadySkipped ? (
+          <div className="skipped-message"><CircleStop /> <span><b>Workout skipped</b><small>Be kind to yourself. Tomorrow is a fresh start.</small></span></div>
         ) : canPlay ? (
-          <button className="start-button" onClick={onStart}><Play fill="currentColor" /> Start workout <ChevronRight /></button>
+          <div className="today-actions"><button className="start-button" onClick={onStart}><Play fill="currentColor" /> Start workout <ChevronRight /></button><button className="skip-button" onClick={() => setConfirmSkip(true)}>Skip today</button></div>
         ) : today.kind === 'rest' ? (
           <div className="rest-message">Take it easy. Your next flow is waiting.</div>
         ) : (
-          <button className="start-button" onClick={onLog}><Check /> Mark as done <ChevronRight /></button>
+          <div className="today-actions"><button className="start-button" onClick={onLog}><Check /> Mark as done <ChevronRight /></button><button className="skip-button" onClick={() => setConfirmSkip(true)}>Skip today</button></div>
         )}
       </section>
+
+      {confirmSkip && <div className="modal-backdrop"><div className="stop-modal"><span className="modal-icon"><CircleStop /></span><p className="eyebrow">SKIP TODAY'S FLOW?</p><h2>Take today off?</h2><p>We’ll add this workout to your history as skipped. It won’t count toward your streak.</p><button className="skip-confirm-button" onClick={() => { onSkip(); setConfirmSkip(false) }}>Yes, skip today</button><button className="secondary-button" onClick={() => setConfirmSkip(false)}>Go back</button></div></div>}
 
       <section className="week-section">
         <div className="section-title"><div><span className="mini-label">THIS WEEK</span><h3>Your rhythm</h3></div><div className="streak-pill"><Flame /> {streak} day streak</div></div>
@@ -161,16 +228,17 @@ function HomeScreen({ today, streak, completedDates, onStart, onLog }: { today: 
   )
 }
 
-function PlanScreen({ onStart }: { onStart: () => void }) {
-  const [openBlock, setOpenBlock] = useState('main')
+function PlanScreen({ plan, onStart }: { plan: WorkoutPlan; onStart: () => void }) {
+  const [openBlock, setOpenBlock] = useState(plan.blocks[0]?.id ?? '')
+  const metrics = getPlanMetrics(plan)
   return (
     <div className="screen plan-screen">
       <p className="eyebrow">YOUR PROGRAM</p>
       <h1>The flow,<br />mapped out.</h1>
-      <p className="lead">A complete upper-body session built to move without guesswork.</p>
-      <div className="plan-summary"><span><TimerReset /> 42 min</span><span><Activity /> {totalSets} sets</span><span><Dumbbell /> {workoutBlocks.length} blocks</span></div>
+      <p className="lead">{plan.name} · scheduled {plan.workoutDays.length} {plan.workoutDays.length === 1 ? 'day' : 'days'} each week.</p>
+      <div className="plan-summary"><span><TimerReset /> {metrics.minutes} min</span><span><Activity /> {metrics.sets} sets</span><span><Dumbbell /> {metrics.blocks} blocks</span></div>
       <div className="block-list">
-        {workoutBlocks.map((block) => {
+        {plan.blocks.map((block) => {
           const open = block.id === openBlock
           return <article className={open ? 'block-card open' : 'block-card'} key={block.id}>
             <button onClick={() => setOpenBlock(open ? '' : block.id)}><span className="block-number">{block.shortName}</span><span><b>{block.name}</b><small>{block.exercises.length} exercises</small></span><ChevronRight /></button>
@@ -183,13 +251,14 @@ function PlanScreen({ onStart }: { onStart: () => void }) {
   )
 }
 
-function ProgressScreen({ sessions, streak, completedDates }: { sessions: Session[]; streak: number; completedDates: Set<string> }) {
+function ProgressScreen({ plan, sessions, streak, completedDates }: { plan: WorkoutPlan; sessions: Session[]; streak: number; completedDates: Set<string> }) {
   const totalMinutes = Math.round(sessions.reduce((sum, item) => sum + item.durationSeconds, 0) / 60)
   const days = Array.from({ length: 28 }, (_, index) => { const date = new Date(); date.setDate(date.getDate() - 27 + index); return date })
   return (
     <div className="screen progress-screen">
       <p className="eyebrow">YOUR PROGRESS</p>
       <h1>Consistency,<br />made visible.</h1>
+      <p className="progress-plan-name">{plan.name}</p>
       <div className="stats-grid">
         <div className="stat dark"><Flame /><strong>{streak}</strong><span>day streak</span></div>
         <div className="stat"><Dumbbell /><strong>{sessions.filter((s) => s.status === 'completed').length}</strong><span>flows finished</span></div>
@@ -202,14 +271,14 @@ function ProgressScreen({ sessions, streak, completedDates }: { sessions: Sessio
       </section>
       <section className="history">
         <div className="section-title"><div><span className="mini-label">RECENT</span><h3>Session history</h3></div></div>
-        {sessions.length === 0 ? <div className="empty-state"><Dumbbell /><b>Your first flow starts here.</b><p>Complete a workout and it’ll show up in your history.</p></div> : sessions.slice(0, 8).map((item) => <div className="history-row" key={item.id}><span className={item.status === 'completed' ? 'history-check' : 'history-check partial'}>{item.status === 'completed' ? <Check /> : <CircleStop />}</span><span><b>{item.title}</b><small>{new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(`${item.date}T12:00:00`))}</small></span><span>{item.durationSeconds ? `${Math.max(1, Math.round(item.durationSeconds / 60))} min` : 'Logged'}</span></div>)}
+        {sessions.length === 0 ? <div className="empty-state"><Dumbbell /><b>Your first flow starts here.</b><p>Complete a workout and it’ll show up in your history.</p></div> : sessions.slice(0, 8).map((item) => <div className="history-row" key={item.id}><span className={item.status === 'completed' ? 'history-check' : item.status === 'skipped' ? 'history-check skipped' : 'history-check partial'}>{item.status === 'completed' ? <Check /> : <CircleStop />}</span><span><b>{item.title}</b><small>{new Intl.DateTimeFormat('en', { month: 'short', day: 'numeric', year: 'numeric' }).format(new Date(`${item.date}T12:00:00`))}</small></span><span>{item.status === 'skipped' ? 'Skipped' : item.durationSeconds ? `${Math.max(1, Math.round(item.durationSeconds / 60))} min` : 'Logged'}</span></div>)}
       </section>
     </div>
   )
 }
 
-function WorkoutPlayer({ onExit, onSave }: { onExit: () => void; onSave: (session: Session) => void }) {
-  const steps = useMemo(() => buildSteps(workoutBlocks), [])
+function WorkoutPlayer({ plan, onExit, onSave }: { plan: WorkoutPlan; onExit: () => void; onSave: (session: Session) => void }) {
+  const steps = useMemo(() => buildSteps(plan.blocks), [plan.blocks])
   const [index, setIndex] = useState(0)
   const [running, setRunning] = useState(true)
   const [remaining, setRemaining] = useState(steps[0].seconds)
@@ -222,8 +291,8 @@ function WorkoutPlayer({ onExit, onSave }: { onExit: () => void; onSave: (sessio
 
   const finish = useCallback((status: 'completed' | 'partial') => {
     if (status === 'completed') playCue('finish')
-    onSave({ id: crypto.randomUUID(), date: isoDate(), title: 'Upper body + core', durationSeconds: Math.max(1, Math.round((Date.now() - startedAt.current) / 1000)), status })
-  }, [onSave])
+    onSave({ id: crypto.randomUUID(), planId: plan.id, date: isoDate(), title: plan.name, durationSeconds: Math.max(1, Math.round((Date.now() - startedAt.current) / 1000)), status })
+  }, [onSave, plan.id, plan.name])
 
   const advance = useCallback(() => {
     if (index >= steps.length - 1) { finish('completed'); return }
