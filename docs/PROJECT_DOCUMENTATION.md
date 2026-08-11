@@ -78,6 +78,19 @@ All scopes use the same player engine to avoid divergent timer, pause, audio, wa
 - Application pages and reusable UI elements were split into dedicated modules.
 - ShadCN’s open-code composition approach was adopted for reusable UI primitives.
 - TypeScript path aliases are defined once in the root and application configs; duplicate JSON configuration is treated as a build-blocking regression.
+- The TypeScript 5.9 configuration uses the valid `ignoreDeprecations: "5.0"` threshold; version-specific compiler settings must match the installed compiler.
+
+### Plan-management feature decomposition
+
+Plan management was split from one combined editor/library component into a feature directory with:
+
+- A dedicated `usePlanEditor` hook for draft state, immutable mutations, numeric editing buffers, validation, normalization, and submission.
+- Separate Plan Editor and Plan Library pages.
+- Focused components for plan basics, live metrics, sections, exercises, editor actions, library cards, management headers, and delete confirmation.
+- Shared plan-management types and schedule formatting.
+- A compatibility barrel at the former import path so application orchestration remains stable.
+
+This boundary keeps stateful form logic independent from presentation and makes individual plan-management behaviors testable without loading the entire application shell.
 
 ## 3. Technology
 
@@ -105,7 +118,24 @@ src/
   data.ts                        Workout-plan model, built-in plan, metrics
   player.ts                      Pure plan-to-player step builder
   types.ts                       Shared navigation and session types
-  PlanManagement.tsx             Plan editor and library feature
+  PlanManagement.tsx             Compatibility exports for plan management
+  features/
+    plan-management/
+      use-plan-editor.ts         Draft state, mutations, validation, submission
+      format-plan.ts             Plan-specific display formatting
+      types.ts                   Editor and library contracts
+      pages/
+        plan-editor-page.tsx     Plan creation and editing composition
+        plan-library-page.tsx    Plan selection and management composition
+      components/
+        plan-basics-form.tsx     Name, schedule, and metrics
+        plan-metrics.tsx         Live calculated metrics
+        section-editor.tsx       Section composition and controls
+        exercise-editor.tsx      Exercise fields and numeric buffers
+        editor-actions.tsx       Save and Save & Load actions
+        plan-library-card.tsx    Plan summary and actions
+        management-header.tsx    Shared page header
+        delete-plan-dialog.tsx   Confirmed destructive action
   pages/
     home-page.tsx                Today schedule and skip flow
     plan-page.tsx                Plan overview and scoped starts
@@ -279,3 +309,9 @@ The current architecture and interaction pass was verified on 2026-08-11:
 - A numeric field changed from `1` to an empty string without coercing to `0`.
 - Saving with the empty number showed validation; entering a replacement removed the error immediately.
 - Browser console checks reported no errors.
+- The plan-management decomposition passed an additional production build and mobile regression pass.
+- Plan library cards and Edit/Delete/Load actions rendered correctly after extraction.
+- Existing plan values loaded correctly into the extracted editor page.
+- Adding and deleting a section changed the count from 5 → 6 → 5.
+- Adding and deleting a workout changed the first section from 6 → 7 → 6.
+- Numeric empty-state validation and error reset remained operational after moving into the hook.
