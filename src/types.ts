@@ -1,4 +1,5 @@
 export type Screen = "home" | "plan" | "progress" | "manage" | "editor";
+export type SessionScope = "plan" | "section" | "exercise";
 
 export type Session = {
   id: string;
@@ -7,6 +8,9 @@ export type Session = {
   title: string;
   durationSeconds: number;
   status: "completed" | "partial" | "skipped";
+  scope?: SessionScope;
+  completionRatio?: number;
+  qualifiesForStreak?: boolean;
 };
 
 export type DisplayDay = {

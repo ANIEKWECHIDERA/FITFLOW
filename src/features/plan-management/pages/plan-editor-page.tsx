@@ -18,7 +18,9 @@ export function PlanEditorPage({
     <div className="management-page editor-page">
       <ManagementHeader
         eyebrow={initialPlan ? "EDIT PLAN" : "NEW PLAN"}
-        title={initialPlan ? "Refine your flow" : "Build your flow"}
+        title={
+          initialPlan ? "Refine your workout flow" : "Build your workout flow"
+        }
         onBack={onCancel}
         action={
           <Button

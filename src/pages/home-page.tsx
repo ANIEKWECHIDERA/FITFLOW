@@ -60,7 +60,7 @@ export function HomePage({
       </section>
       <Card className="today-card">
         <div className="today-card-head">
-          <span className="mini-label">TODAY'S FLOW</span>
+          <span className="mini-label">TODAY'S WORKOUT FLOW</span>
           <span className="duration">
             <Clock3 /> {today.duration}
           </span>
@@ -83,7 +83,7 @@ export function HomePage({
         </div>
         {alreadyDone ? (
           <Button className="start-button done">
-            <Check /> Completed today
+            <Check /> Today’s goal met
           </Button>
         ) : alreadySkipped ? (
           <div className="skipped-message">
@@ -108,7 +108,7 @@ export function HomePage({
           </div>
         ) : (
           <div className="rest-message">
-            Take it easy. Your next flow is waiting.
+            Take it easy. Your next workout flow is waiting.
           </div>
         )}
       </Card>
@@ -118,7 +118,7 @@ export function HomePage({
             <span className="modal-icon">
               <CircleStop />
             </span>
-            <p className="eyebrow">SKIP TODAY'S FLOW?</p>
+            <p className="eyebrow">SKIP TODAY'S WORKOUT FLOW?</p>
             <h2>Take today off?</h2>
             <p>
               We’ll add this workout to your history as skipped. It won’t count

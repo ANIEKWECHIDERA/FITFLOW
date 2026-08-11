@@ -948,16 +948,22 @@ blockquote {
   height: 28px;
 }
 .stop-control {
+  min-height: 48px;
+  min-width: 160px;
+  padding: 0 22px;
   border: 0;
   background: transparent;
   color: #939b93;
   display: flex;
+  justify-content: center;
   align-items: center;
-  gap: 6px;
-  font-size: 10px;
+  gap: 9px;
+  font-size: 14px;
+  font-weight: 700;
 }
 .stop-control svg {
-  width: 14px;
+  width: 20px;
+  height: 20px;
 }
 .up-next {
   min-height: 62px;

@@ -80,6 +80,19 @@ All scopes use the same player engine to avoid divergent timer, pause, audio, wa
 - TypeScript path aliases are defined once in the root and application configs; duplicate JSON configuration is treated as a build-blocking regression.
 - The TypeScript 5.9 configuration uses the valid `ignoreDeprecations: "5.0"` threshold; version-specific compiler settings must match the installed compiler.
 
+### Streak qualification correction
+
+Session completion and daily streak qualification are now separate concepts:
+
+- Every player launch records a scope: `plan`, `section`, or `exercise`.
+- Completing a section or individual exercise can be recorded as a completed session in history, but never satisfies the scheduled workout day.
+- Only a full-plan launch is eligible for streak credit.
+- A full plan qualifies when all sets are completed or when a saved partial session contains at least 50% of the full plan’s exercise sets.
+- Rest intervals are excluded from the 50% calculation.
+- A past required workout day with no qualifying session immediately terminates the streak walkback.
+- An explicit skip on today’s required workout day resets the streak immediately.
+- An unlogged current day receives grace until the day ends, since the user can still complete the workout later that day.
+
 ### Plan-management feature decomposition
 
 Plan management was split from one combined editor/library component into a feature directory with:
@@ -91,6 +104,17 @@ Plan management was split from one combined editor/library component into a feat
 - A compatibility barrel at the former import path so application orchestration remains stable.
 
 This boundary keeps stateful form logic independent from presentation and makes individual plan-management behaviors testable without loading the entire application shell.
+
+### Workout continuity and screen-awake pass
+
+- Active player scope, plan identity, blocks, step index, run/pause state, remaining seconds, absolute deadline, and start timestamp are stored as a versioned local snapshot.
+- Refreshing or reopening the application restores the active workout instead of returning to navigation.
+- A running timed step is recovered from its absolute deadline. Expired consecutive timed steps are traversed until the current timed step or the next rep-based step is reached.
+- Paused timers remain paused with their exact saved remainder.
+- Saving, completing, or explicitly discarding a session clears the active snapshot.
+- Screen Wake Lock is requested throughout an active workout, released on player teardown, and re-requested when a hidden page becomes visible again.
+- Wake-lock denial and unsupported browsers fail safely without blocking the workout.
+- The End Workout control now has a 48 px minimum touch target, larger label, and larger icon.
 
 ## 3. Technology
 
@@ -148,10 +172,14 @@ src/
     ui/
       button.tsx                 ShadCN-style button primitive
       card.tsx                   ShadCN-style card primitives
+  hooks/
+    use-screen-wake-lock.ts      Visibility-aware wake-lock lifecycle
   lib/
+    active-workout.ts            Active snapshot creation and timer recovery
     audio.ts                     Shared Web Audio cue engine
     format.ts                    Date and count formatting
     schedule.ts                  Plan-to-week schedule projection
+    session-rules.ts             Scope qualification and streak rules
     storage.ts                   Persistence keys and safe loaders
     utils.ts                     Component class composition
 ```
@@ -207,7 +235,15 @@ type Exercise = {
 
 ### Session
 
-Sessions are `completed`, `partial`, or `skipped` and are linked to a plan ID. Legacy sessions without a plan ID are associated with the built-in plan.
+Sessions are `completed`, `partial`, or `skipped` and are linked to a plan ID. They also store:
+
+```ts
+scope?: 'plan' | 'section' | 'exercise'
+completionRatio?: number
+qualifiesForStreak?: boolean
+```
+
+`status` describes what happened inside the launched scope. `qualifiesForStreak` separately states whether the scheduled day was satisfied. Legacy sessions without scope metadata qualify only when they are completed and their title exactly matches the active plan name; this prevents historical scoped sessions from being counted.
 
 ## 6. Player and Timer Technique
 
@@ -221,9 +257,13 @@ remaining = ceil((deadline - current timestamp) / 1000)
 
 The UI refresh interval is not treated as elapsed time. This avoids drift when the browser throttles timers or the tab is backgrounded.
 
+The active timer snapshot persists its absolute deadline, not just the displayed remainder. On refresh, recovery advances across elapsed timed steps and stops at the first rep-based step that still needs user confirmation. A paused snapshot does not consume elapsed wall-clock time.
+
 The 3–2–1 cue check runs every 50 ms. A shared `AudioContext` avoids repeatedly paying audio initialization latency. A per-second guard prevents duplicate ticks, and an advancing guard prevents duplicate transitions at zero.
 
 The countdown number itself does not animate.
+
+For partial-session qualification, completed exercise steps are counted before the current player step. A completed session receives credit for every exercise set in its launched scope. That scoped count is divided by the entire plan’s exercise-set count, but only `plan` scope may qualify.
 
 ## 7. Duration and Streak Rules
 
@@ -237,6 +277,8 @@ rest = rest seconds × max(sets - 1, 0)
 Optional sections are excluded from the base duration estimate. Sets and section totals include the complete plan.
 
 Streaks inspect only the active plan’s required workout days. Optional workout days and rest days are skipped during the streak walkback.
+
+The qualification threshold is centralized as `STREAK_COMPLETION_THRESHOLD = 0.5` in `lib/session-rules.ts`. Streak and outcome calculation are pure functions so threshold, scope, missed-day, and skip behavior can be tested without running the timer UI.
 
 ## 8. Forms and Validation
 
@@ -256,6 +298,9 @@ Validation errors are cleared on relevant input changes so stale messages do not
 - Exercise name and metadata are separate vertical text rows.
 - Singular and plural labels are generated from counts.
 - The Plan page defaults to collapsed sections to reduce visual noise.
+- The countdown exposes timer semantics and an explicit remaining-seconds accessible name without announcing every tick.
+- Destructive player controls meet a 48 px minimum touch-target height.
+- Screen Wake Lock is best-effort enhancement; workout controls and timer persistence do not depend on browser support.
 
 ## 10. Animation Policy
 
@@ -270,6 +315,8 @@ Plan save, load, and delete actions pass through a loading-screen boundary. They
 ## 12. Persistence
 
 Current storage keys are centralized in `lib/storage.ts`. Loaders catch malformed JSON and fall back safely. Plan objects are stored as a complete collection; the active plan has a separate key.
+
+The versioned `fitflow.active-workout.v1` snapshot is written when a workout starts and as player state changes. It is removed only when that workout is saved, completed, or explicitly discarded. This state is intentionally local so an accidental refresh works offline and does not require the planned backend.
 
 Do not scatter new storage keys through page components.
 
@@ -315,3 +362,20 @@ The current architecture and interaction pass was verified on 2026-08-11:
 - Adding and deleting a section changed the count from 5 → 6 → 5.
 - Adding and deleting a workout changed the first section from 6 → 7 → 6.
 - Numeric empty-state validation and error reset remained operational after moving into the hook.
+- A completed section at 53.6% of total plan sets remained non-qualifying because its scope was not `plan`.
+- A completed individual exercise remained non-qualifying.
+- Full-plan partial outcomes were verified below the boundary (48.2%, false) and at the boundary (50%, true).
+- Full-plan completion produced a 100% qualifying outcome.
+- A missed required workout day produced a zero streak.
+- A prior qualifying day produced a one-day streak across a rest day.
+- An explicit skip on the current required day produced a zero streak immediately.
+- Scoped player launch remained operational and browser console checks reported no errors.
+- Active workout snapshots restore timed and paused player states after refresh.
+- Timer recovery uses the stored absolute deadline and stops at rep-based steps requiring confirmation.
+- Screen Wake Lock re-acquisition follows document visibility changes and releases on player teardown.
+- The End Workout control has a 48 px minimum target and readable 14 px label.
+- The production TypeScript/Vite/PWA build passed with 2,234 transformed modules.
+- Browser recovery preserved a paused timer at 42 seconds across refresh.
+- An expired running deadline advanced from Arm circles to Jumping jacks and recovered at 57 seconds.
+- A fresh browser console check reported zero errors and zero warnings.
+- The repository's `npm run lint` command remains unavailable because ESLint 10 requires an `eslint.config.js` flat configuration file that is not currently present; no lint configuration was added as part of this player-focused pass.

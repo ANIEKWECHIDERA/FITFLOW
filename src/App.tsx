@@ -2,11 +2,20 @@ import { useCallback, useMemo, useState } from "react";
 import { AnimatePresence, motion } from "motion/react";
 import { BarChart3, Dumbbell, Home } from "lucide-react";
 import { defaultPlan, type WorkoutBlock, type WorkoutPlan } from "./data";
-import type { Screen, Session } from "./types";
+import type { Screen, Session, SessionScope } from "./types";
 import { isoDate } from "./lib/format";
 import { playCue } from "./lib/audio";
 import { buildWeek } from "./lib/schedule";
-import { loadPlans, loadSessions, STORAGE_KEYS } from "./lib/storage";
+import {
+  clearActiveWorkout,
+  loadActiveWorkout,
+  loadPlans,
+  loadSessions,
+  saveActiveWorkout,
+  STORAGE_KEYS,
+} from "./lib/storage";
+import { createActiveWorkout } from "./lib/active-workout";
+import { calculateCurrentStreak, qualifiesForStreak } from "./lib/session-rules";
 import { AppNavigation } from "./components/app-navigation";
 import { LoadingScreen } from "./components/loading-screen";
 import { ProfileMenu } from "./components/profile-menu";
@@ -18,10 +27,7 @@ import { PlanEditor, PlanLibrary } from "./PlanManagement";
 
 function App() {
   const [screen, setScreen] = useState<Screen>("home");
-  const [playerScope, setPlayerScope] = useState<{
-    blocks: WorkoutBlock[];
-    title: string;
-  } | null>(null);
+  const [playerScope, setPlayerScope] = useState(loadActiveWorkout);
   const [sessions, setSessions] = useState<Session[]>(loadSessions);
   const [plans, setPlans] = useState<WorkoutPlan[]>(loadPlans);
   const [activePlanId, setActivePlanId] = useState(() => {
@@ -54,10 +60,10 @@ function App() {
     () =>
       new Set(
         planSessions
-          .filter((item) => item.status === "completed")
+          .filter((item) => qualifiesForStreak(item, activePlan))
           .map((item) => item.date),
       ),
-    [planSessions],
+    [activePlan, planSessions],
   );
   const skippedDates = useMemo(
     () =>
@@ -69,26 +75,8 @@ function App() {
     [planSessions],
   );
   const currentStreak = useMemo(() => {
-    let streak = 0;
-    const cursor = new Date();
-    for (let index = 0; index < 60; index += 1) {
-      if (!activePlan.workoutDays.includes(cursor.getDay())) {
-        cursor.setDate(cursor.getDate() - 1);
-        continue;
-      }
-      if (completedDates.has(isoDate(cursor))) {
-        streak += 1;
-        cursor.setDate(cursor.getDate() - 1);
-        continue;
-      }
-      if (isoDate(cursor) === isoDate()) {
-        cursor.setDate(cursor.getDate() - 1);
-        continue;
-      }
-      break;
-    }
-    return streak;
-  }, [activePlan.workoutDays, completedDates]);
+    return calculateCurrentStreak({ workoutDays: activePlan.workoutDays, qualifyingDates: completedDates, skippedDates });
+  }, [activePlan.workoutDays, completedDates, skippedDates]);
 
   const saveSession = useCallback(
     (session: Session) =>
@@ -140,9 +128,20 @@ function App() {
         return next;
       }),
     );
-  const startPlayer = (blocks: WorkoutBlock[], title: string) => {
+  const startPlayer = (blocks: WorkoutBlock[], title: string, scope: SessionScope) => {
     playCue("start");
-    setPlayerScope({ blocks, title });
+    const activeWorkout = createActiveWorkout(
+      activePlan.id,
+      blocks,
+      title,
+      scope,
+    );
+    saveActiveWorkout(activeWorkout);
+    setPlayerScope(activeWorkout);
+  };
+  const closePlayer = () => {
+    clearActiveWorkout();
+    setPlayerScope(null);
   };
   const closeProfile = (action: () => void) => {
     action();
@@ -184,13 +183,17 @@ function App() {
   if (playerScope)
     return (
       <WorkoutPlayerPage
-        plan={activePlan}
+        plan={
+          plans.find((plan) => plan.id === playerScope.planId) ?? activePlan
+        }
         blocks={playerScope.blocks}
         sessionTitle={playerScope.title}
-        onExit={() => setPlayerScope(null)}
+        scope={playerScope.scope}
+        resumeState={playerScope}
+        onExit={closePlayer}
         onSave={(session) => {
           saveSession(session);
-          setPlayerScope(null);
+          closePlayer();
           setScreen("progress");
         }}
       />
@@ -246,7 +249,7 @@ function App() {
               streak={currentStreak}
               completedDates={completedDates}
               skippedDates={skippedDates}
-              onStart={() => startPlayer(activePlan.blocks, activePlan.name)}
+              onStart={() => startPlayer(activePlan.blocks, activePlan.name, "plan")}
               onSkip={() =>
                 saveSession({
                   id: crypto.randomUUID(),
@@ -255,6 +258,9 @@ function App() {
                   title: activePlan.name,
                   durationSeconds: 0,
                   status: "skipped",
+                  scope: "plan",
+                  completionRatio: 0,
+                  qualifiesForStreak: false,
                 })
               }
             />

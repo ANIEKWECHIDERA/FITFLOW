@@ -11,16 +11,30 @@ import {
   Wind,
 } from "lucide-react";
 import type { WorkoutBlock, WorkoutPlan } from "../data";
-import type { Session } from "../types";
+import type { Session, SessionScope } from "../types";
 import { buildSteps, formatTime } from "../player";
 import { isoDate } from "../lib/format";
 import { playCue } from "../lib/audio";
 import { Button } from "../components/ui/button";
+import {
+  calculateSessionOutcome,
+  countExerciseSets,
+} from "../lib/session-rules";
+import {
+  recoverActiveWorkout,
+} from "../lib/active-workout";
+import {
+  saveActiveWorkout,
+  type ActiveWorkoutState,
+} from "../lib/storage";
+import { useScreenWakeLock } from "../hooks/use-screen-wake-lock";
 
 type WorkoutPlayerPageProps = {
   plan: WorkoutPlan;
   blocks: WorkoutBlock[];
   sessionTitle: string;
+  scope: SessionScope;
+  resumeState: ActiveWorkoutState;
   onExit: () => void;
   onSave: (session: Session) => void;
 };
@@ -29,26 +43,43 @@ export function WorkoutPlayerPage({
   plan,
   blocks,
   sessionTitle,
+  scope,
+  resumeState,
   onExit,
   onSave,
 }: WorkoutPlayerPageProps) {
   const steps = useMemo(() => buildSteps(blocks), [blocks]);
-  const [index, setIndex] = useState(0);
-  const [running, setRunning] = useState(true);
-  const [remaining, setRemaining] = useState(steps[0].seconds);
-  const [confirmStop, setConfirmStop] = useState(false);
-  const startedAt = useRef(Date.now());
-  const deadline = useRef(
-    steps[0].mode === "timed" ? Date.now() + steps[0].seconds * 1000 : 0,
+  const fullPlanSets = useMemo(
+    () => countExerciseSets(plan.blocks),
+    [plan.blocks],
   );
+  const scopedSets = useMemo(() => countExerciseSets(blocks), [blocks]);
+  const restored = useRef(recoverActiveWorkout(resumeState, steps)).current;
+  const [index, setIndex] = useState(restored.index);
+  const [running, setRunning] = useState(restored.running);
+  const [remaining, setRemaining] = useState(restored.remainingSeconds);
+  const [confirmStop, setConfirmStop] = useState(false);
+  const startedAt = useRef(restored.startedAtMs);
+  const deadline = useRef(restored.deadlineMs);
   const lastTick = useRef<number | null>(null);
   const advancing = useRef(false);
-  const wakeLock = useRef<WakeLockSentinel | null>(null);
   const step = steps[index];
+
+  useScreenWakeLock();
 
   const finish = useCallback(
     (status: "completed" | "partial") => {
       if (status === "completed") playCue("finish");
+      const completedSets = steps
+        .slice(0, index)
+        .filter((candidate) => candidate.kind === "exercise").length;
+      const { completionRatio, qualifiesForStreak } = calculateSessionOutcome({
+        scope,
+        status,
+        completedSets,
+        scopedSets,
+        fullPlanSets,
+      });
       onSave({
         id: crypto.randomUUID(),
         planId: plan.id,
@@ -59,9 +90,21 @@ export function WorkoutPlayerPage({
           Math.round((Date.now() - startedAt.current) / 1000),
         ),
         status,
+        scope,
+        completionRatio,
+        qualifiesForStreak,
       });
     },
-    [onSave, plan.id, sessionTitle],
+    [
+      fullPlanSets,
+      index,
+      onSave,
+      plan.id,
+      scope,
+      scopedSets,
+      sessionTitle,
+      steps,
+    ],
   );
 
   const advance = useCallback(() => {
@@ -108,19 +151,15 @@ export function WorkoutPlayerPage({
   }, [advance, running, step.mode]);
 
   useEffect(() => {
-    const request = async () => {
-      try {
-        if ("wakeLock" in navigator)
-          wakeLock.current = await navigator.wakeLock.request("screen");
-      } catch {
-        /* best effort */
-      }
-    };
-    void request();
-    return () => {
-      void wakeLock.current?.release();
-    };
-  }, []);
+    saveActiveWorkout({
+      ...resumeState,
+      index,
+      running,
+      remainingSeconds: remaining,
+      deadlineMs: deadline.current,
+      startedAtMs: startedAt.current,
+    });
+  }, [index, remaining, resumeState, running]);
 
   const togglePause = () => {
     if (step.mode !== "timed") return;
@@ -189,7 +228,16 @@ export function WorkoutPlayerPage({
           <h1>
             {step.kind === "rest" ? "Catch your breath" : step.exerciseName}
           </h1>
-          <div className="target">
+          <div
+            className="target"
+            role={step.mode === "timed" ? "timer" : undefined}
+            aria-live="off"
+            aria-label={
+              step.mode === "timed"
+                ? `${remaining} seconds remaining`
+                : step.reps
+            }
+          >
             {step.mode === "timed" ? formatTime(remaining) : step.reps}
           </div>
           {step.note && step.kind === "exercise" && (
@@ -246,7 +294,7 @@ export function WorkoutPlayerPage({
             <span className="modal-icon">
               <CircleStop />
             </span>
-            <p className="eyebrow">END THIS FLOW?</p>
+            <p className="eyebrow">END THIS WORKOUT FLOW?</p>
             <h2>Save your progress?</h2>
             <p>
               You’ve completed {Math.round(progress)}% of this workout. Partial

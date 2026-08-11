@@ -11,10 +11,11 @@ import { getPlanMetrics, type WorkoutBlock, type WorkoutPlan } from "../data";
 import { countLabel } from "../lib/format";
 import { Button } from "../components/ui/button";
 import { Card } from "../components/ui/card";
+import type { SessionScope } from "../types";
 
 type PlanPageProps = {
   plan: WorkoutPlan;
-  onStart: (blocks: WorkoutBlock[], title: string) => void;
+  onStart: (blocks: WorkoutBlock[], title: string, scope: SessionScope) => void;
 };
 
 export function PlanPage({ plan, onStart }: PlanPageProps) {
@@ -78,7 +79,11 @@ export function PlanPage({ plan, onStart }: PlanPageProps) {
                     size="icon"
                     className="scope-start"
                     onClick={() =>
-                      onStart([block], `${plan.name} · ${block.name}`)
+                      onStart(
+                        [block],
+                        `${plan.name} · ${block.name}`,
+                        "section",
+                      )
                     }
                     aria-label={`Start ${block.name}`}
                   >
@@ -115,6 +120,7 @@ export function PlanPage({ plan, onStart }: PlanPageProps) {
                               onStart(
                                 [{ ...block, exercises: [exercise] }],
                                 `${exercise.name} · ${block.name}`,
+                                "exercise",
                               )
                             }
                             aria-label={`Start ${exercise.name}`}
@@ -133,7 +139,7 @@ export function PlanPage({ plan, onStart }: PlanPageProps) {
       </div>
       <Button
         className="floating-start"
-        onClick={() => onStart(plan.blocks, plan.name)}
+        onClick={() => onStart(plan.blocks, plan.name, "plan")}
       >
         <Play fill="currentColor" /> Begin this flow
       </Button>

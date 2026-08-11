@@ -54,7 +54,9 @@ export function ProgressPage({
         <Card className="stat">
           <Dumbbell />
           <strong>{completedCount}</strong>
-          <span>{completedCount === 1 ? "flow" : "flows"} finished</span>
+          <span>
+            {completedCount === 1 ? "Workout flow" : "Workout flows"} finished
+          </span>
         </Card>
         <Card className="stat wide">
           <Clock3 />
@@ -98,7 +100,7 @@ export function ProgressPage({
         {sessions.length === 0 ? (
           <div className="empty-state">
             <Dumbbell />
-            <b>Your first flow starts here.</b>
+            <b>Your first workout flow starts here.</b>
             <p>Complete a workout and it’ll show up in your history.</p>
           </div>
         ) : (
